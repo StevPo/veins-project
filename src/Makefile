@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for libveins
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep --make-so -O out --no-deep-includes -I/home/stavros/veins-veins-4.4/src
+#  opp_makemake -f --deep --make-so -O out --no-deep-includes -I/home/stavros/veins-project/src
 #
 
 # Name of target to be created (-o option)
