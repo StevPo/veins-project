@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:noNamespaceSchemaLocation="http://sumo.sf.net/xsd/nodes_file.xsd">
-   <node id="n0" x="-2000.0" y="1000.0" />
-   <node id="n1" x="2000.0" y="1000.0" />
+   <node id="n0" x="0" y="1000" />
+   <node id="n1" x="4000" y="1000" />
 </nodes>
