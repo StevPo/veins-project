@@ -1,0 +1,45 @@
+---- 20160902-20:28:14 ---------------------------------------------------------
+
+
+Tcl error: moduleinspector.cc#232: tagOrId "f3" doesn't match any items
+    while executing
+".inspector1.c raise submodext f3"
+
+
+Tcl error: moduleinspector.cc#652: ptr0x243d3c0 not found
+    while executing
+"error "$tag not found""
+    (procedure "ModuleInspector:getSubmodCoords" line 4)
+    invoked from within
+"ModuleInspector:getSubmodCoords $c $modptr"
+    (procedure "ModuleInspector:drawNextEventMarker" line 2)
+    invoked from within
+"ModuleInspector:drawNextEventMarker .inspector3.c ptr0x243d3c0 2"
+
+
+Tcl error: moduleinspector.cc#232: tagOrId "f3" doesn't match any items
+    while executing
+".inspector3.c raise submodext f3"
+
+
+Tcl error: moduleinspector.cc#232: tagOrId "f3" doesn't match any items
+    while executing
+".inspector3.c raise submodext f3"
+
+
+Tcl error: moduleinspector.cc#652: ptr0x243d3c0 not found
+    while executing
+"error "$tag not found""
+    (procedure "ModuleInspector:getSubmodCoords" line 4)
+    invoked from within
+"ModuleInspector:getSubmodCoords $c $modptr"
+    (procedure "ModuleInspector:drawNextEventMarker" line 2)
+    invoked from within
+"ModuleInspector:drawNextEventMarker .inspector9.c ptr0x243d3c0 2"
+
+
+Tcl error: moduleinspector.cc#232: tagOrId "f3" doesn't match any items
+    while executing
+".inspector9.c raise submodext f3"
+
+

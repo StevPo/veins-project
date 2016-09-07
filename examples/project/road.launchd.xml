@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!-- debug config -->
+<launch>
+	<copy file="road.net.xml" />
+	<copy file="road.rou.xml" />
+	<copy file="road.sumo.cfg" type="config" />
+</launch>
+

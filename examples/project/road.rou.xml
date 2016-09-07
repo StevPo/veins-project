@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+  <vType accel="3.0" decel="6.0" id="CarA" length="5.0" minGap="2.5" maxSpeed="50.0" sigma="0.5" />
+  <route id="r1" edges="e1"/>
+  <route id="r2" edges="e2"/>
+  <vehicle depart="0" id="v0" route="r1" type="CarA" color="1,0,0" /> 
+  <vehicle depart="0" id="v1" route="r2" type="CarA" color="1,0,0" />
+</routes>
