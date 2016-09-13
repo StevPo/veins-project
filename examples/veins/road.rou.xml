@@ -3,6 +3,10 @@
   <vType accel="3.0" decel="6.0" id="CarA" length="5.0" minGap="2.5" maxSpeed="50.0" sigma="0.5" />
   <route id="r1" edges="e1"/>
   <route id="r2" edges="e2"/>
+  <flow id="f1" color="1,1,0" begin="0" end="1000" probability="0.2" type="CarA" route="r1" departLane="random"/>
+  <flow id="f2" color="1,1,0" begin="0" end="1000" probability="0.2" type="CarA" route="r2" departLane="random"/>
+<!--
   <vehicle depart="0" id="v0" route="r1" type="CarA" color="1,0,0" /> 
   <vehicle depart="0" id="v1" route="r2" type="CarA" color="1,0,0" />
+-->
 </routes>
