@@ -23,6 +23,13 @@ package org.car2x.veins.nodes;
 import org.car2x.veins.base.modules.*;
 import org.car2x.veins.modules.nic.Nic80211p;
 
+
+simple Txc1
+{
+    gates:
+        output out;
+}
+
 module Car
 {
     parameters:
@@ -47,6 +54,10 @@ module Car
                 @display("p=130,172;i=block/cogwheel");
         }
         
+        timer: Txc1 {
+            @display("p=148,50");
+        }
+        
     connections:
         nic.upperLayerOut --> appl.lowerLayerIn;
         nic.upperLayerIn <-- appl.lowerLayerOut;
@@ -54,5 +65,6 @@ module Car
         nic.upperControlIn <-- appl.lowerControlOut;
 
         veinsradioIn --> nic.radioIn;
+		timer.out --> appl.timerIn;
 
 }

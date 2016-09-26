@@ -46,6 +46,10 @@ module RSU
                 @display("p=130,172;i=block/cogwheel");
         }
         
+        timer: Txc1 {
+            @display("p=148,50");
+        }
+        
     connections:
         nic.upperLayerOut --> appl.lowerLayerIn;
         nic.upperLayerIn <-- appl.lowerLayerOut;
@@ -53,4 +57,5 @@ module RSU
         nic.upperControlIn <-- appl.lowerControlOut;
 
         veinsradioIn --> nic.radioIn;
+        timer.out --> appl.timerIn;
 }

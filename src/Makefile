@@ -79,6 +79,7 @@ OBJS = \
     $O/veins/modules/phy/Decider80211p.o \
     $O/veins/modules/phy/NistErrorRate.o \
     $O/veins/modules/phy/PhyLayer80211p.o \
+    $O/veins/modules/timer/txc1.o \
     $O/veins/modules/world/annotations/AnnotationManager.o \
     $O/veins/modules/world/annotations/AnnotationDummy.o \
     $O/veins/base/messages/ChannelSenseRequest_m.o \
@@ -205,6 +206,7 @@ clean:
 	$(Q)-rm -f veins/modules/nic/*_m.cc veins/modules/nic/*_m.h veins/modules/nic/*_sm.cc veins/modules/nic/*_sm.h
 	$(Q)-rm -f veins/modules/obstacle/*_m.cc veins/modules/obstacle/*_m.h veins/modules/obstacle/*_sm.cc veins/modules/obstacle/*_sm.h
 	$(Q)-rm -f veins/modules/phy/*_m.cc veins/modules/phy/*_m.h veins/modules/phy/*_sm.cc veins/modules/phy/*_sm.h
+	$(Q)-rm -f veins/modules/timer/*_m.cc veins/modules/timer/*_m.h veins/modules/timer/*_sm.cc veins/modules/timer/*_sm.h
 	$(Q)-rm -f veins/modules/utility/*_m.cc veins/modules/utility/*_m.h veins/modules/utility/*_sm.cc veins/modules/utility/*_sm.h
 	$(Q)-rm -f veins/modules/world/*_m.cc veins/modules/world/*_m.h veins/modules/world/*_sm.cc veins/modules/world/*_sm.h
 	$(Q)-rm -f veins/modules/world/annotations/*_m.cc veins/modules/world/annotations/*_m.h veins/modules/world/annotations/*_sm.cc veins/modules/world/annotations/*_sm.h
@@ -215,7 +217,7 @@ cleanall: clean
 
 depend:
 	$(qecho) Creating dependencies...
-	$(Q)$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES) $(SM_CC_FILES)  ./*.cc scripts/*.cc veins/*.cc veins/base/*.cc veins/base/connectionManager/*.cc veins/base/messages/*.cc veins/base/modules/*.cc veins/base/phyLayer/*.cc veins/base/utils/*.cc veins/modules/*.cc veins/modules/analogueModel/*.cc veins/modules/application/*.cc veins/modules/application/ieee80211p/*.cc veins/modules/application/traci/*.cc veins/modules/mac/*.cc veins/modules/mac/ieee80211p/*.cc veins/modules/messages/*.cc veins/modules/mobility/*.cc veins/modules/mobility/traci/*.cc veins/modules/nic/*.cc veins/modules/obstacle/*.cc veins/modules/phy/*.cc veins/modules/utility/*.cc veins/modules/world/*.cc veins/modules/world/annotations/*.cc veins/nodes/*.cc
+	$(Q)$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES) $(SM_CC_FILES)  ./*.cc scripts/*.cc veins/*.cc veins/base/*.cc veins/base/connectionManager/*.cc veins/base/messages/*.cc veins/base/modules/*.cc veins/base/phyLayer/*.cc veins/base/utils/*.cc veins/modules/*.cc veins/modules/analogueModel/*.cc veins/modules/application/*.cc veins/modules/application/ieee80211p/*.cc veins/modules/application/traci/*.cc veins/modules/mac/*.cc veins/modules/mac/ieee80211p/*.cc veins/modules/messages/*.cc veins/modules/mobility/*.cc veins/modules/mobility/traci/*.cc veins/modules/nic/*.cc veins/modules/obstacle/*.cc veins/modules/phy/*.cc veins/modules/timer/*.cc veins/modules/utility/*.cc veins/modules/world/*.cc veins/modules/world/annotations/*.cc veins/nodes/*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 $O/veins/base/connectionManager/BaseConnectionManager.o: veins/base/connectionManager/BaseConnectionManager.cc \
@@ -1083,6 +1085,31 @@ $O/veins/modules/phy/SNRThresholdDecider.o: veins/modules/phy/SNRThresholdDecide
 	veins/base/utils/MiXiMDefs.h \
 	veins/base/utils/miximkerneldefs.h \
 	veins/modules/phy/SNRThresholdDecider.h
+$O/veins/modules/timer/txc1.o: veins/modules/timer/txc1.cc \
+	veins/base/connectionManager/BaseConnectionManager.h \
+	veins/base/connectionManager/NicEntry.h \
+	veins/base/modules/BaseBattery.h \
+	veins/base/modules/BaseMobility.h \
+	veins/base/modules/BaseModule.h \
+	veins/base/modules/BaseWorldUtility.h \
+	veins/base/modules/BatteryAccess.h \
+	veins/base/utils/Coord.h \
+	veins/base/utils/FWMath.h \
+	veins/base/utils/FindModule.h \
+	veins/base/utils/HostState.h \
+	veins/base/utils/MiXiMDefs.h \
+	veins/base/utils/Move.h \
+	veins/base/utils/miximkerneldefs.h \
+	veins/modules/mobility/traci/TraCIBuffer.h \
+	veins/modules/mobility/traci/TraCIColor.h \
+	veins/modules/mobility/traci/TraCICommandInterface.h \
+	veins/modules/mobility/traci/TraCIConnection.h \
+	veins/modules/mobility/traci/TraCICoord.h \
+	veins/modules/mobility/traci/TraCIMobility.h \
+	veins/modules/mobility/traci/TraCIScenarioManager.h \
+	veins/modules/obstacle/Obstacle.h \
+	veins/modules/obstacle/ObstacleControl.h \
+	veins/modules/world/annotations/AnnotationManager.h
 $O/veins/modules/world/annotations/AnnotationDummy.o: veins/modules/world/annotations/AnnotationDummy.cc \
 	veins/base/utils/MiXiMDefs.h \
 	veins/base/utils/miximkerneldefs.h \

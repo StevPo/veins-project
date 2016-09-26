@@ -53,4 +53,5 @@ simple BaseWaveApplLayer like IBaseApplLayer
         output lowerLayerOut; // to mac layer
         input lowerControlIn;
         output lowerControlOut;
+        input timerIn;
 }
