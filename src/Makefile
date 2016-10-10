@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for libveins
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep --make-so -O out --no-deep-includes -I/home/stavros/veins-project/src
+#  opp_makemake -f --deep --make-so -O out --no-deep-includes -I/home/theodoros/Development/Stavros/veins-project/src
 #
 
 # Name of target to be created (-o option)
@@ -22,88 +22,85 @@ PROJECT_OUTPUT_DIR = ../out
 PROJECTRELATIVE_PATH = src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
-# Object files for local .cc, .msg and .sm files
+# Object files for local .cc and .msg files
 OBJS = \
+    $O/veins/base/connectionManager/NicEntryDebug.o \
     $O/veins/base/connectionManager/NicEntryDirect.o \
-    $O/veins/base/connectionManager/ConnectionManager.o \
     $O/veins/base/connectionManager/ChannelAccess.o \
     $O/veins/base/connectionManager/BaseConnectionManager.o \
-    $O/veins/base/connectionManager/NicEntryDebug.o \
-    $O/veins/base/modules/BaseWorldUtility.o \
+    $O/veins/base/connectionManager/ConnectionManager.o \
     $O/veins/base/modules/BaseMobility.o \
-    $O/veins/base/modules/BaseApplLayer.o \
     $O/veins/base/modules/BatteryAccess.o \
     $O/veins/base/modules/BaseBattery.o \
-    $O/veins/base/modules/BaseMacLayer.o \
-    $O/veins/base/modules/BaseModule.o \
     $O/veins/base/modules/BaseLayer.o \
-    $O/veins/base/phyLayer/BasePhyLayer.o \
+    $O/veins/base/modules/BaseModule.o \
+    $O/veins/base/modules/BaseMacLayer.o \
+    $O/veins/base/modules/BaseApplLayer.o \
+    $O/veins/base/modules/BaseWorldUtility.o \
+    $O/veins/base/phyLayer/MappingBase.o \
+    $O/veins/base/phyLayer/ChannelState.o \
     $O/veins/base/phyLayer/MappingUtils.o \
     $O/veins/base/phyLayer/PhyUtils.o \
-    $O/veins/base/phyLayer/Signal.o \
-    $O/veins/base/phyLayer/ChannelState.o \
-    $O/veins/base/phyLayer/ChannelInfo.o \
-    $O/veins/base/phyLayer/MappingBase.o \
-    $O/veins/base/phyLayer/Decider.o \
     $O/veins/base/phyLayer/BaseDecider.o \
+    $O/veins/base/phyLayer/BasePhyLayer.o \
+    $O/veins/base/phyLayer/Signal.o \
+    $O/veins/base/phyLayer/ChannelInfo.o \
+    $O/veins/base/phyLayer/Decider.o \
+    $O/veins/base/utils/NetwToMacControlInfo.o \
+    $O/veins/base/utils/asserts.o \
     $O/veins/base/utils/SimpleAddress.o \
     $O/veins/base/utils/Coord.o \
     $O/veins/base/utils/winsupport.o \
-    $O/veins/base/utils/asserts.o \
-    $O/veins/base/utils/NetwToMacControlInfo.o \
-    $O/veins/modules/analogueModel/TwoRayInterferenceModel.o \
-    $O/veins/modules/analogueModel/SimplePathlossModel.o \
-    $O/veins/modules/analogueModel/NakagamiFading.o \
-    $O/veins/modules/analogueModel/LogNormalShadowing.o \
     $O/veins/modules/analogueModel/PERModel.o \
-    $O/veins/modules/analogueModel/BreakpointPathlossModel.o \
-    $O/veins/modules/analogueModel/JakesFading.o \
     $O/veins/modules/analogueModel/SimpleObstacleShadowing.o \
+    $O/veins/modules/analogueModel/TwoRayInterferenceModel.o \
+    $O/veins/modules/analogueModel/LogNormalShadowing.o \
+    $O/veins/modules/analogueModel/NakagamiFading.o \
+    $O/veins/modules/analogueModel/SimplePathlossModel.o \
+    $O/veins/modules/analogueModel/JakesFading.o \
+    $O/veins/modules/analogueModel/BreakpointPathlossModel.o \
     $O/veins/modules/application/ieee80211p/BaseWaveApplLayer.o \
     $O/veins/modules/application/traci/TraCITestApp.o \
     $O/veins/modules/application/traci/TraCIDemo11p.o \
     $O/veins/modules/application/traci/TraCIDemoRSU11p.o \
     $O/veins/modules/mac/ieee80211p/Mac1609_4.o \
-    $O/veins/modules/mobility/traci/TraCIScenarioManager.o \
     $O/veins/modules/mobility/traci/TraCIBuffer.o \
-    $O/veins/modules/mobility/traci/TraCIScreenRecorder.o \
-    $O/veins/modules/mobility/traci/TraCICommandInterface.o \
-    $O/veins/modules/mobility/traci/TraCIScenarioManagerInet.o \
-    $O/veins/modules/mobility/traci/TraCIMobility.o \
-    $O/veins/modules/mobility/traci/TraCIColor.o \
     $O/veins/modules/mobility/traci/TraCIConnection.o \
+    $O/veins/modules/mobility/traci/TraCIScreenRecorder.o \
+    $O/veins/modules/mobility/traci/TraCIColor.o \
+    $O/veins/modules/mobility/traci/TraCIScenarioManagerInet.o \
+    $O/veins/modules/mobility/traci/TraCICommandInterface.o \
+    $O/veins/modules/mobility/traci/TraCIScenarioManager.o \
     $O/veins/modules/mobility/traci/TraCIScenarioManagerLaunchd.o \
-    $O/veins/modules/obstacle/Obstacle.o \
+    $O/veins/modules/mobility/traci/TraCIMobility.o \
     $O/veins/modules/obstacle/ObstacleControl.o \
-    $O/veins/modules/phy/SNRThresholdDecider.o \
-    $O/veins/modules/phy/Decider80211p.o \
+    $O/veins/modules/obstacle/Obstacle.o \
     $O/veins/modules/phy/NistErrorRate.o \
+    $O/veins/modules/phy/Decider80211p.o \
     $O/veins/modules/phy/PhyLayer80211p.o \
+    $O/veins/modules/phy/SNRThresholdDecider.o \
     $O/veins/modules/timer/txc1.o \
-    $O/veins/modules/world/annotations/AnnotationManager.o \
     $O/veins/modules/world/annotations/AnnotationDummy.o \
+    $O/veins/modules/world/annotations/AnnotationManager.o \
     $O/veins/base/messages/ChannelSenseRequest_m.o \
     $O/veins/base/messages/MacPkt_m.o \
-    $O/veins/base/messages/BorderMsg_m.o \
     $O/veins/base/messages/AirFrame_m.o \
-    $O/veins/modules/messages/AirFrame11p_m.o \
-    $O/veins/modules/messages/Mac80211Pkt_m.o \
+    $O/veins/base/messages/BorderMsg_m.o \
     $O/veins/modules/messages/WaveShortMessage_m.o \
+    $O/veins/modules/messages/Mac80211Pkt_m.o \
+    $O/veins/modules/messages/AirFrame11p_m.o \
     $O/veins/modules/messages/PhyControlMessage_m.o
 
 # Message files
 MSGFILES = \
     veins/base/messages/ChannelSenseRequest.msg \
     veins/base/messages/MacPkt.msg \
-    veins/base/messages/BorderMsg.msg \
     veins/base/messages/AirFrame.msg \
-    veins/modules/messages/AirFrame11p.msg \
-    veins/modules/messages/Mac80211Pkt.msg \
+    veins/base/messages/BorderMsg.msg \
     veins/modules/messages/WaveShortMessage.msg \
+    veins/modules/messages/Mac80211Pkt.msg \
+    veins/modules/messages/AirFrame11p.msg \
     veins/modules/messages/PhyControlMessage.msg
-
-# SM files
-SMFILES =
 
 #------------------------------------------------------------------------------
 
@@ -131,7 +128,6 @@ OMNETPP_LIBS = -L"$(OMNETPP_LIB_SUBDIR)" -L"$(OMNETPP_LIB_DIR)" -loppenvir$D $(K
 
 COPTS = $(CFLAGS)  $(INCLUDE_PATH) -I$(OMNETPP_INCL_DIR)
 MSGCOPTS = $(INCLUDE_PATH)
-SMCOPTS =
 
 # we want to recompile everything if COPTS changes,
 # so we store COPTS into $COPTS_FILE and have object
@@ -159,7 +155,7 @@ $O/$(TARGET): $(OBJS)  $(wildcard $(EXTRA_OBJS)) Makefile
 	$(Q)$(SHLIB_LD) -o $O/$(TARGET)  $(OBJS) $(EXTRA_OBJS) $(AS_NEEDED_OFF) $(WHOLE_ARCHIVE_ON) $(LIBS) $(WHOLE_ARCHIVE_OFF) $(OMNETPP_LIBS) $(LDFLAGS)
 	$(Q)$(SHLIB_POSTPROCESS) $O/$(TARGET)
 
-.PHONY: all clean cleanall depend msgheaders smheaders
+.PHONY: all clean cleanall depend msgheaders
 
 .SUFFIXES: .cc
 
@@ -172,52 +168,46 @@ $O/%.o: %.cc $(COPTS_FILE)
 	$(qecho) MSGC: $<
 	$(Q)$(MSGC) -s _m.cc $(MSGCOPTS) $?
 
-%_sm.cc %_sm.h: %.sm
-	$(qecho) SMC: $<
-	$(Q)$(SMC) -c++ -suffix cc $(SMCOPTS) $?
-
 msgheaders: $(MSGFILES:.msg=_m.h)
-
-smheaders: $(SMFILES:.sm=_sm.h)
 
 clean:
 	$(qecho) Cleaning...
 	$(Q)-rm -rf $O
 	$(Q)-rm -f veins veins.exe libveins.so libveins.a libveins.dll libveins.dylib
-	$(Q)-rm -f ./*_m.cc ./*_m.h ./*_sm.cc ./*_sm.h
-	$(Q)-rm -f scripts/*_m.cc scripts/*_m.h scripts/*_sm.cc scripts/*_sm.h
-	$(Q)-rm -f veins/*_m.cc veins/*_m.h veins/*_sm.cc veins/*_sm.h
-	$(Q)-rm -f veins/base/*_m.cc veins/base/*_m.h veins/base/*_sm.cc veins/base/*_sm.h
-	$(Q)-rm -f veins/base/connectionManager/*_m.cc veins/base/connectionManager/*_m.h veins/base/connectionManager/*_sm.cc veins/base/connectionManager/*_sm.h
-	$(Q)-rm -f veins/base/messages/*_m.cc veins/base/messages/*_m.h veins/base/messages/*_sm.cc veins/base/messages/*_sm.h
-	$(Q)-rm -f veins/base/modules/*_m.cc veins/base/modules/*_m.h veins/base/modules/*_sm.cc veins/base/modules/*_sm.h
-	$(Q)-rm -f veins/base/phyLayer/*_m.cc veins/base/phyLayer/*_m.h veins/base/phyLayer/*_sm.cc veins/base/phyLayer/*_sm.h
-	$(Q)-rm -f veins/base/utils/*_m.cc veins/base/utils/*_m.h veins/base/utils/*_sm.cc veins/base/utils/*_sm.h
-	$(Q)-rm -f veins/modules/*_m.cc veins/modules/*_m.h veins/modules/*_sm.cc veins/modules/*_sm.h
-	$(Q)-rm -f veins/modules/analogueModel/*_m.cc veins/modules/analogueModel/*_m.h veins/modules/analogueModel/*_sm.cc veins/modules/analogueModel/*_sm.h
-	$(Q)-rm -f veins/modules/application/*_m.cc veins/modules/application/*_m.h veins/modules/application/*_sm.cc veins/modules/application/*_sm.h
-	$(Q)-rm -f veins/modules/application/ieee80211p/*_m.cc veins/modules/application/ieee80211p/*_m.h veins/modules/application/ieee80211p/*_sm.cc veins/modules/application/ieee80211p/*_sm.h
-	$(Q)-rm -f veins/modules/application/traci/*_m.cc veins/modules/application/traci/*_m.h veins/modules/application/traci/*_sm.cc veins/modules/application/traci/*_sm.h
-	$(Q)-rm -f veins/modules/mac/*_m.cc veins/modules/mac/*_m.h veins/modules/mac/*_sm.cc veins/modules/mac/*_sm.h
-	$(Q)-rm -f veins/modules/mac/ieee80211p/*_m.cc veins/modules/mac/ieee80211p/*_m.h veins/modules/mac/ieee80211p/*_sm.cc veins/modules/mac/ieee80211p/*_sm.h
-	$(Q)-rm -f veins/modules/messages/*_m.cc veins/modules/messages/*_m.h veins/modules/messages/*_sm.cc veins/modules/messages/*_sm.h
-	$(Q)-rm -f veins/modules/mobility/*_m.cc veins/modules/mobility/*_m.h veins/modules/mobility/*_sm.cc veins/modules/mobility/*_sm.h
-	$(Q)-rm -f veins/modules/mobility/traci/*_m.cc veins/modules/mobility/traci/*_m.h veins/modules/mobility/traci/*_sm.cc veins/modules/mobility/traci/*_sm.h
-	$(Q)-rm -f veins/modules/nic/*_m.cc veins/modules/nic/*_m.h veins/modules/nic/*_sm.cc veins/modules/nic/*_sm.h
-	$(Q)-rm -f veins/modules/obstacle/*_m.cc veins/modules/obstacle/*_m.h veins/modules/obstacle/*_sm.cc veins/modules/obstacle/*_sm.h
-	$(Q)-rm -f veins/modules/phy/*_m.cc veins/modules/phy/*_m.h veins/modules/phy/*_sm.cc veins/modules/phy/*_sm.h
-	$(Q)-rm -f veins/modules/timer/*_m.cc veins/modules/timer/*_m.h veins/modules/timer/*_sm.cc veins/modules/timer/*_sm.h
-	$(Q)-rm -f veins/modules/utility/*_m.cc veins/modules/utility/*_m.h veins/modules/utility/*_sm.cc veins/modules/utility/*_sm.h
-	$(Q)-rm -f veins/modules/world/*_m.cc veins/modules/world/*_m.h veins/modules/world/*_sm.cc veins/modules/world/*_sm.h
-	$(Q)-rm -f veins/modules/world/annotations/*_m.cc veins/modules/world/annotations/*_m.h veins/modules/world/annotations/*_sm.cc veins/modules/world/annotations/*_sm.h
-	$(Q)-rm -f veins/nodes/*_m.cc veins/nodes/*_m.h veins/nodes/*_sm.cc veins/nodes/*_sm.h
+	$(Q)-rm -f ./*_m.cc ./*_m.h
+	$(Q)-rm -f scripts/*_m.cc scripts/*_m.h
+	$(Q)-rm -f veins/*_m.cc veins/*_m.h
+	$(Q)-rm -f veins/base/*_m.cc veins/base/*_m.h
+	$(Q)-rm -f veins/base/connectionManager/*_m.cc veins/base/connectionManager/*_m.h
+	$(Q)-rm -f veins/base/messages/*_m.cc veins/base/messages/*_m.h
+	$(Q)-rm -f veins/base/modules/*_m.cc veins/base/modules/*_m.h
+	$(Q)-rm -f veins/base/phyLayer/*_m.cc veins/base/phyLayer/*_m.h
+	$(Q)-rm -f veins/base/utils/*_m.cc veins/base/utils/*_m.h
+	$(Q)-rm -f veins/modules/*_m.cc veins/modules/*_m.h
+	$(Q)-rm -f veins/modules/analogueModel/*_m.cc veins/modules/analogueModel/*_m.h
+	$(Q)-rm -f veins/modules/application/*_m.cc veins/modules/application/*_m.h
+	$(Q)-rm -f veins/modules/application/ieee80211p/*_m.cc veins/modules/application/ieee80211p/*_m.h
+	$(Q)-rm -f veins/modules/application/traci/*_m.cc veins/modules/application/traci/*_m.h
+	$(Q)-rm -f veins/modules/mac/*_m.cc veins/modules/mac/*_m.h
+	$(Q)-rm -f veins/modules/mac/ieee80211p/*_m.cc veins/modules/mac/ieee80211p/*_m.h
+	$(Q)-rm -f veins/modules/messages/*_m.cc veins/modules/messages/*_m.h
+	$(Q)-rm -f veins/modules/mobility/*_m.cc veins/modules/mobility/*_m.h
+	$(Q)-rm -f veins/modules/mobility/traci/*_m.cc veins/modules/mobility/traci/*_m.h
+	$(Q)-rm -f veins/modules/nic/*_m.cc veins/modules/nic/*_m.h
+	$(Q)-rm -f veins/modules/obstacle/*_m.cc veins/modules/obstacle/*_m.h
+	$(Q)-rm -f veins/modules/phy/*_m.cc veins/modules/phy/*_m.h
+	$(Q)-rm -f veins/modules/timer/*_m.cc veins/modules/timer/*_m.h
+	$(Q)-rm -f veins/modules/utility/*_m.cc veins/modules/utility/*_m.h
+	$(Q)-rm -f veins/modules/world/*_m.cc veins/modules/world/*_m.h
+	$(Q)-rm -f veins/modules/world/annotations/*_m.cc veins/modules/world/annotations/*_m.h
+	$(Q)-rm -f veins/nodes/*_m.cc veins/nodes/*_m.h
 
 cleanall: clean
 	$(Q)-rm -rf $(PROJECT_OUTPUT_DIR)
 
 depend:
 	$(qecho) Creating dependencies...
-	$(Q)$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES) $(SM_CC_FILES)  ./*.cc scripts/*.cc veins/*.cc veins/base/*.cc veins/base/connectionManager/*.cc veins/base/messages/*.cc veins/base/modules/*.cc veins/base/phyLayer/*.cc veins/base/utils/*.cc veins/modules/*.cc veins/modules/analogueModel/*.cc veins/modules/application/*.cc veins/modules/application/ieee80211p/*.cc veins/modules/application/traci/*.cc veins/modules/mac/*.cc veins/modules/mac/ieee80211p/*.cc veins/modules/messages/*.cc veins/modules/mobility/*.cc veins/modules/mobility/traci/*.cc veins/modules/nic/*.cc veins/modules/obstacle/*.cc veins/modules/phy/*.cc veins/modules/timer/*.cc veins/modules/utility/*.cc veins/modules/world/*.cc veins/modules/world/annotations/*.cc veins/nodes/*.cc
+	$(Q)$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc scripts/*.cc veins/*.cc veins/base/*.cc veins/base/connectionManager/*.cc veins/base/messages/*.cc veins/base/modules/*.cc veins/base/phyLayer/*.cc veins/base/utils/*.cc veins/modules/*.cc veins/modules/analogueModel/*.cc veins/modules/application/*.cc veins/modules/application/ieee80211p/*.cc veins/modules/application/traci/*.cc veins/modules/mac/*.cc veins/modules/mac/ieee80211p/*.cc veins/modules/messages/*.cc veins/modules/mobility/*.cc veins/modules/mobility/traci/*.cc veins/modules/nic/*.cc veins/modules/obstacle/*.cc veins/modules/phy/*.cc veins/modules/timer/*.cc veins/modules/utility/*.cc veins/modules/world/*.cc veins/modules/world/annotations/*.cc veins/nodes/*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 $O/veins/base/connectionManager/BaseConnectionManager.o: veins/base/connectionManager/BaseConnectionManager.cc \
