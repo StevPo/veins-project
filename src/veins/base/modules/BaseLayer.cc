@@ -57,6 +57,7 @@ void BaseLayer::initialize(int stage)
         upperControlOut = findGate("upperControlOut");
         lowerControlIn  = findGate("lowerControlIn");
         lowerControlOut = findGate("lowerControlOut");
+        timerIn = findGate("timerIn");
     }
 }
 
@@ -88,6 +89,9 @@ void BaseLayer::handleMessage(cMessage* msg)
     } else if(msg->getArrivalGateId()==lowerLayerIn) {
         recordPacket(PassedMessage::INCOMING,PassedMessage::LOWER_DATA,msg);
         handleLowerMsg(msg);
+    }
+    else if (msg->getArrivalGateId()== timerIn ) {
+            handleSelfMsg(msg);
     }
     else if(msg->getArrivalGateId()==-1) {
         /* Classes extending this class may not use all the gates, f.e.

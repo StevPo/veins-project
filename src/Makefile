@@ -30,11 +30,13 @@ OBJS = \
     $O/veins/base/connectionManager/BaseConnectionManager.o \
     $O/veins/base/connectionManager/NicEntryDebug.o \
     $O/veins/base/modules/BaseWorldUtility.o \
+    $O/veins/base/modules/Timer_Car.o \
     $O/veins/base/modules/BaseMobility.o \
     $O/veins/base/modules/BaseApplLayer.o \
     $O/veins/base/modules/BatteryAccess.o \
     $O/veins/base/modules/BaseBattery.o \
     $O/veins/base/modules/BaseMacLayer.o \
+    $O/veins/base/modules/Timer_RSU.o \
     $O/veins/base/modules/BaseModule.o \
     $O/veins/base/modules/BaseLayer.o \
     $O/veins/base/phyLayer/BasePhyLayer.o \
@@ -406,6 +408,22 @@ $O/veins/base/modules/BatteryAccess.o: veins/base/modules/BatteryAccess.cc \
 	veins/base/utils/HostState.h \
 	veins/base/utils/MiXiMDefs.h \
 	veins/base/utils/miximkerneldefs.h
+$O/veins/base/modules/Timer_Car.o: veins/base/modules/Timer_Car.cc \
+	veins/base/modules/Timer_Car.h \
+	veins/base/utils/Coord.h \
+	veins/base/utils/FWMath.h \
+	veins/base/utils/FindModule.h \
+	veins/base/utils/MiXiMDefs.h \
+	veins/base/utils/miximkerneldefs.h \
+	veins/modules/world/annotations/AnnotationManager.h
+$O/veins/base/modules/Timer_RSU.o: veins/base/modules/Timer_RSU.cc \
+	veins/base/modules/Timer_RSU.h \
+	veins/base/utils/Coord.h \
+	veins/base/utils/FWMath.h \
+	veins/base/utils/FindModule.h \
+	veins/base/utils/MiXiMDefs.h \
+	veins/base/utils/miximkerneldefs.h \
+	veins/modules/world/annotations/AnnotationManager.h
 $O/veins/base/phyLayer/BaseDecider.o: veins/base/phyLayer/BaseDecider.cc \
 	veins/base/messages/AirFrame_m.h \
 	veins/base/messages/ChannelSenseRequest_m.h \

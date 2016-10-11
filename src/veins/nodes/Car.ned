@@ -47,6 +47,10 @@ module Car
                 @display("p=130,172;i=block/cogwheel");
         }
         
+ 		timer: Timer_Car {
+            @display("p=138,50");
+        }
+        
     connections:
         nic.upperLayerOut --> appl.lowerLayerIn;
         nic.upperLayerIn <-- appl.lowerLayerOut;
@@ -54,5 +58,6 @@ module Car
         nic.upperControlIn <-- appl.lowerControlOut;
 
         veinsradioIn --> nic.radioIn;
+        appl.timerIn <-- timer.out;
 
 }
