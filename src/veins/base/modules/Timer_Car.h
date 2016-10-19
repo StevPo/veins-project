@@ -24,7 +24,6 @@ protected:
     cMessage *timeoutEvent;  // holds pointer to the timeout self-message
     int seq;  // message sequence number
     cMessage *message;  // message that has to be re-sent on timeout
-    double velocity;
     double chargingPadLength;
     double spacingLength;
     TraCIMobility* traci;

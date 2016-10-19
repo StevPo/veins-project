@@ -44,24 +44,20 @@ void Timer_Car::initialize(int stage)
     seq = 0;
     spacingLength=0.02; //Spacing in meters/second
     //Nominator is the greatest common divasor of chargingPadLength+spacingLength
-    // timeout=spacingLength/traci->getSpeed();
-    EV << "Sending initial message\n";
-    //1 millisecond timer period
-    timeout = 0.001;
+    timeout = 0.001;     //1 millisecond timer period
     timeoutEvent = new cMessage("timeoutEvent");
 
     // Generate and send initial message.
     EV << "Sending initial message\n";
     message = generateNewMessage();
-    //sendCopyOf(message);
     scheduleAt(simTime()+timeout, timeoutEvent);
 }
 
 void Timer_Car::handleMessage(cMessage *msg)
 {
     double speed=traci->getSpeed();
-    if (speed>1) {
-        EV << "EV speed is :"<<speed<<endl;
+    if (speed > 1) {
+        EV << "EV speed is :" << speed << endl;
         sendCopyOf(message);
         timeout= spacingLength/speed;
         scheduleAt(simTime()+timeout, timeoutEvent);

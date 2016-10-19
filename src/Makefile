@@ -61,6 +61,8 @@ OBJS = \
     $O/veins/modules/analogueModel/BreakpointPathlossModel.o \
     $O/veins/modules/analogueModel/JakesFading.o \
     $O/veins/modules/analogueModel/SimpleObstacleShadowing.o \
+    $O/veins/modules/application/Charging/Charging1Car.o \
+    $O/veins/modules/application/Charging/Charging1RSU.o \
     $O/veins/modules/application/ieee80211p/BaseWaveApplLayer.o \
     $O/veins/modules/application/traci/TraCITestApp.o \
     $O/veins/modules/application/traci/TraCIDemo11p.o \
@@ -197,6 +199,7 @@ clean:
 	$(Q)-rm -f veins/modules/*_m.cc veins/modules/*_m.h veins/modules/*_sm.cc veins/modules/*_sm.h
 	$(Q)-rm -f veins/modules/analogueModel/*_m.cc veins/modules/analogueModel/*_m.h veins/modules/analogueModel/*_sm.cc veins/modules/analogueModel/*_sm.h
 	$(Q)-rm -f veins/modules/application/*_m.cc veins/modules/application/*_m.h veins/modules/application/*_sm.cc veins/modules/application/*_sm.h
+	$(Q)-rm -f veins/modules/application/Charging/*_m.cc veins/modules/application/Charging/*_m.h veins/modules/application/Charging/*_sm.cc veins/modules/application/Charging/*_sm.h
 	$(Q)-rm -f veins/modules/application/ieee80211p/*_m.cc veins/modules/application/ieee80211p/*_m.h veins/modules/application/ieee80211p/*_sm.cc veins/modules/application/ieee80211p/*_sm.h
 	$(Q)-rm -f veins/modules/application/traci/*_m.cc veins/modules/application/traci/*_m.h veins/modules/application/traci/*_sm.cc veins/modules/application/traci/*_sm.h
 	$(Q)-rm -f veins/modules/mac/*_m.cc veins/modules/mac/*_m.h veins/modules/mac/*_sm.cc veins/modules/mac/*_sm.h
@@ -217,7 +220,7 @@ cleanall: clean
 
 depend:
 	$(qecho) Creating dependencies...
-	$(Q)$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES) $(SM_CC_FILES)  ./*.cc scripts/*.cc veins/*.cc veins/base/*.cc veins/base/connectionManager/*.cc veins/base/messages/*.cc veins/base/modules/*.cc veins/base/phyLayer/*.cc veins/base/utils/*.cc veins/modules/*.cc veins/modules/analogueModel/*.cc veins/modules/application/*.cc veins/modules/application/ieee80211p/*.cc veins/modules/application/traci/*.cc veins/modules/mac/*.cc veins/modules/mac/ieee80211p/*.cc veins/modules/messages/*.cc veins/modules/mobility/*.cc veins/modules/mobility/traci/*.cc veins/modules/nic/*.cc veins/modules/obstacle/*.cc veins/modules/phy/*.cc veins/modules/utility/*.cc veins/modules/world/*.cc veins/modules/world/annotations/*.cc veins/nodes/*.cc
+	$(Q)$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES) $(SM_CC_FILES)  ./*.cc scripts/*.cc veins/*.cc veins/base/*.cc veins/base/connectionManager/*.cc veins/base/messages/*.cc veins/base/modules/*.cc veins/base/phyLayer/*.cc veins/base/utils/*.cc veins/modules/*.cc veins/modules/analogueModel/*.cc veins/modules/application/*.cc veins/modules/application/Charging/*.cc veins/modules/application/ieee80211p/*.cc veins/modules/application/traci/*.cc veins/modules/mac/*.cc veins/modules/mac/ieee80211p/*.cc veins/modules/messages/*.cc veins/modules/mobility/*.cc veins/modules/mobility/traci/*.cc veins/modules/nic/*.cc veins/modules/obstacle/*.cc veins/modules/phy/*.cc veins/modules/utility/*.cc veins/modules/world/*.cc veins/modules/world/annotations/*.cc veins/nodes/*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 $O/veins/base/connectionManager/BaseConnectionManager.o: veins/base/connectionManager/BaseConnectionManager.cc \
@@ -682,6 +685,67 @@ $O/veins/modules/analogueModel/TwoRayInterferenceModel.o: veins/modules/analogue
 	veins/base/utils/MiXiMDefs.h \
 	veins/base/utils/miximkerneldefs.h \
 	veins/modules/analogueModel/TwoRayInterferenceModel.h
+$O/veins/modules/application/Charging/Charging1Car.o: veins/modules/application/Charging/Charging1Car.cc \
+	veins/base/connectionManager/BaseConnectionManager.h \
+	veins/base/connectionManager/ChannelAccess.h \
+	veins/base/connectionManager/NicEntry.h \
+	veins/base/modules/BaseApplLayer.h \
+	veins/base/modules/BaseBattery.h \
+	veins/base/modules/BaseLayer.h \
+	veins/base/modules/BaseMobility.h \
+	veins/base/modules/BaseModule.h \
+	veins/base/modules/BaseWorldUtility.h \
+	veins/base/modules/BatteryAccess.h \
+	veins/base/utils/Coord.h \
+	veins/base/utils/FWMath.h \
+	veins/base/utils/FindModule.h \
+	veins/base/utils/HostState.h \
+	veins/base/utils/MiXiMDefs.h \
+	veins/base/utils/Move.h \
+	veins/base/utils/NetwToMacControlInfo.h \
+	veins/base/utils/PassedMessage.h \
+	veins/base/utils/SimpleAddress.h \
+	veins/base/utils/miximkerneldefs.h \
+	veins/modules/application/Charging/Charging1Car.h \
+	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
+	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \
+	veins/modules/messages/WaveShortMessage_m.h \
+	veins/modules/mobility/traci/TraCIBuffer.h \
+	veins/modules/mobility/traci/TraCIColor.h \
+	veins/modules/mobility/traci/TraCICommandInterface.h \
+	veins/modules/mobility/traci/TraCIConnection.h \
+	veins/modules/mobility/traci/TraCICoord.h \
+	veins/modules/mobility/traci/TraCIMobility.h \
+	veins/modules/mobility/traci/TraCIScenarioManager.h \
+	veins/modules/obstacle/Obstacle.h \
+	veins/modules/obstacle/ObstacleControl.h \
+	veins/modules/utility/Consts80211p.h \
+	veins/modules/world/annotations/AnnotationManager.h
+$O/veins/modules/application/Charging/Charging1RSU.o: veins/modules/application/Charging/Charging1RSU.cc \
+	veins/base/connectionManager/ChannelAccess.h \
+	veins/base/modules/BaseApplLayer.h \
+	veins/base/modules/BaseBattery.h \
+	veins/base/modules/BaseLayer.h \
+	veins/base/modules/BaseMobility.h \
+	veins/base/modules/BaseModule.h \
+	veins/base/modules/BaseWorldUtility.h \
+	veins/base/modules/BatteryAccess.h \
+	veins/base/utils/Coord.h \
+	veins/base/utils/FWMath.h \
+	veins/base/utils/FindModule.h \
+	veins/base/utils/HostState.h \
+	veins/base/utils/MiXiMDefs.h \
+	veins/base/utils/Move.h \
+	veins/base/utils/NetwToMacControlInfo.h \
+	veins/base/utils/PassedMessage.h \
+	veins/base/utils/SimpleAddress.h \
+	veins/base/utils/miximkerneldefs.h \
+	veins/modules/application/Charging/Charging1RSU.h \
+	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
+	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \
+	veins/modules/messages/WaveShortMessage_m.h \
+	veins/modules/utility/Consts80211p.h \
+	veins/modules/world/annotations/AnnotationManager.h
 $O/veins/modules/application/ieee80211p/BaseWaveApplLayer.o: veins/modules/application/ieee80211p/BaseWaveApplLayer.cc \
 	veins/base/connectionManager/ChannelAccess.h \
 	veins/base/modules/BaseApplLayer.h \
