@@ -11,8 +11,9 @@
 #include <string.h>
 #include <omnetpp.h>
 #include "veins/modules/world/annotations/AnnotationManager.h"
+#include "veins/modules/mobility/traci/TraCIMobility.h"
 
-
+using Veins::TraCIMobility;
 using Veins::AnnotationManager;
 
 
@@ -23,6 +24,10 @@ protected:
     cMessage *timeoutEvent;  // holds pointer to the timeout self-message
     int seq;  // message sequence number
     cMessage *message;  // message that has to be re-sent on timeout
+    double velocity;
+    double chargingPadLength;
+    double spacingLength;
+    TraCIMobility* traci;
 
 protected:
     AnnotationManager* annotations;
