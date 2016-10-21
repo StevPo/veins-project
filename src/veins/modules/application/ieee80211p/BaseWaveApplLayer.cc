@@ -99,6 +99,8 @@ void BaseWaveApplLayer::handlePositionUpdate(cObject* obj) {
 	curPosition = mobility->getCurrentPosition();
 }
 
+
+
 void BaseWaveApplLayer::handleLowerMsg(cMessage* msg) {
 
 	WaveShortMessage* wsm = dynamic_cast<WaveShortMessage*>(msg);
@@ -116,6 +118,10 @@ void BaseWaveApplLayer::handleLowerMsg(cMessage* msg) {
 	delete(msg);
 }
 
+void BaseWaveApplLayer::onTimer(cMessage* msg) {
+
+}
+
 void BaseWaveApplLayer::handleSelfMsg(cMessage* msg) {
 	switch (msg->getKind()) {
 		case SEND_BEACON_EVT: {
@@ -125,7 +131,8 @@ void BaseWaveApplLayer::handleSelfMsg(cMessage* msg) {
 		}
 		default: {
 			if (msg)
-				DBG << "APP: Error: Got Self Message of unknown kind! Name: " << msg->getName() << endl;
+//				DBG << "APP: Error: Got Self Message of unknown kind! Name: " << msg->getName() << endl;
+			    onTimer(msg);
 			break;
 		}
 	}

@@ -16,6 +16,8 @@
 #include "veins/modules/application/Charging/Charging1RSU.h"
 
 using Veins::AnnotationManagerAccess;
+using Veins::TraCIScenarioManagerAccess;
+using namespace std;
 
 Define_Module(Charging1RSU);
 
@@ -26,28 +28,40 @@ void Charging1RSU::initialize(int stage) {
         ASSERT(mobi);
         annotations = AnnotationManagerAccess().getIfExists();
         ASSERT(annotations);
+        traci = TraCIScenarioManagerAccess().get();
+        ASSERT(traci);
         sentMessage = false;
+        chargingRatio = 0;
     }
 }
 
 void Charging1RSU::onTimer(cMessage* msg) {
 
+    totalVehicles = traci->getManagedHosts();
+    EV << "Number of cars: " << totalVehicles.size() << endl;
+
+    totalDemand = totalVehicles.size()*chargingRatio;
+    EV << "Total demand is: " << totalDemand << endl;
+
+    EV << "Charging ratio is: " << chargingRatio << endl;
+
+    if (totalDemand <= maxSupply) {
+        chargingRatio++;
+    }
+    else chargingRatio = chargingRatio*reduce;
+
+    EV << "New charging ratio is: " << chargingRatio << endl;
+
 }
 
 void Charging1RSU::onBeacon(WaveShortMessage* wsm) {
-
 }
 
 void Charging1RSU::onData(WaveShortMessage* wsm) {
-    findHost()->getDisplayString().updateWith("r=16,green");
-
-    annotations->scheduleErase(1, annotations->drawLine(wsm->getSenderPos(), mobi->getCurrentPosition(), "blue"));
-
-    if (!sentMessage) sendMessage(wsm->getWsmData());
 }
 
 void Charging1RSU::sendMessage(std::string blockedRoadId) {
-
 }
+
 void Charging1RSU::sendWSM(WaveShortMessage* wsm) {
 }

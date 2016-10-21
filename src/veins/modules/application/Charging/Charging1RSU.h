@@ -18,13 +18,18 @@
 
 #include "veins/modules/application/ieee80211p/BaseWaveApplLayer.h"
 #include "veins/modules/world/annotations/AnnotationManager.h"
+#include "veins/modules/mobility/traci/TraCIScenarioManager.h"
+#include <iostream>
 
 using Veins::AnnotationManager;
+using Veins::TraCIScenarioManager;
+using namespace std;
 
 class Charging1RSU : public BaseWaveApplLayer {
     public:
         virtual void initialize(int stage);
     protected:
+        TraCIScenarioManager* traci;
         AnnotationManager* annotations;
         BaseMobility* mobi;
         bool sentMessage;
@@ -35,6 +40,15 @@ class Charging1RSU : public BaseWaveApplLayer {
         virtual void sendWSM(WaveShortMessage* wsm);
     protected:
         virtual void onTimer(cMessage* msg);
+
+    protected:
+        const int maxSupply = 1000;
+        const double reduce = 0.5;
+
+        std::map<std::string, cModule*> totalVehicles;
+
+        double totalDemand;
+        double chargingRatio;
 };
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING1RSU_H_ */

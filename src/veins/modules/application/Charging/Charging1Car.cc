@@ -32,10 +32,8 @@ void Charging1Car::initialize(int stage) {
 }
 
 void Charging1Car::onTimer(cMessage* msg) {
-
+ //   DBG << "TimerCar! Name: " << msg->getName() << endl;
 }
-
-
 
 void Charging1Car::onBeacon(WaveShortMessage* wsm) {
 }
@@ -47,19 +45,6 @@ void Charging1Car::sendMessage(std::string blockedRoadId) {
 }
 
 void Charging1Car::sendWSM(WaveShortMessage* wsm) {
-
 }
 
-
-/*
-void Charging1Car::receiveSignal(cComponent* source, simsignal_t signalID, cObject* obj, cObject* details) {
-
-}
-void Charging1Car::handleParkingUpdate(cObject* obj) {
-
-}
-void Charging1Car::handlePositionUpdate(cObject* obj) {
-
-}
-*/
 

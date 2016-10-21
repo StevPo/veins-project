@@ -76,6 +76,8 @@ class BaseWaveApplLayer : public BaseApplLayer {
 
 		virtual void handlePositionUpdate(cObject* obj);
 
+		virtual void onTimer(cMessage* msg);
+
 	protected:
 		int beaconLengthBits;
 		int beaconPriority;

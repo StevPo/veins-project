@@ -37,34 +37,26 @@ Timer_Car::~Timer_Car()
 void Timer_Car::initialize(int stage)
 {
     cSimpleModule::initialize(stage);
-    if ( stage==0){
-        traci = TraCIMobilityAccess().get(getParentModule());
-    }
 
-    seq = 0;
-    spacingLength=0.02; //Spacing in meters/second
-    //Nominator is the greatest common divasor of chargingPadLength+spacingLength
-    timeout = 0.001;     //1 millisecond timer period
+
+/*
+    //100 millisecond timer period
+    timeout = 0.001;
     timeoutEvent = new cMessage("timeoutEvent");
 
     // Generate and send initial message.
     EV << "Sending initial message\n";
     message = generateNewMessage();
     scheduleAt(simTime()+timeout, timeoutEvent);
+*/
 }
 
 void Timer_Car::handleMessage(cMessage *msg)
 {
-    double speed=traci->getSpeed();
-    if (speed > 1) {
-        EV << "EV speed is :" << speed << endl;
-        sendCopyOf(message);
-        timeout= spacingLength/speed;
-        scheduleAt(simTime()+timeout, timeoutEvent);
-    }
-    else {
-    scheduleAt(simTime()+0.1, timeoutEvent);
-    }
+/*
+    sendCopyOf(message);
+    scheduleAt(simTime()+timeout, timeoutEvent);
+*/
 }
 
 cMessage *Timer_Car::generateNewMessage()

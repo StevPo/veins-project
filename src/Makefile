@@ -722,7 +722,9 @@ $O/veins/modules/application/Charging/Charging1Car.o: veins/modules/application/
 	veins/modules/utility/Consts80211p.h \
 	veins/modules/world/annotations/AnnotationManager.h
 $O/veins/modules/application/Charging/Charging1RSU.o: veins/modules/application/Charging/Charging1RSU.cc \
+	veins/base/connectionManager/BaseConnectionManager.h \
 	veins/base/connectionManager/ChannelAccess.h \
+	veins/base/connectionManager/NicEntry.h \
 	veins/base/modules/BaseApplLayer.h \
 	veins/base/modules/BaseBattery.h \
 	veins/base/modules/BaseLayer.h \
@@ -744,6 +746,13 @@ $O/veins/modules/application/Charging/Charging1RSU.o: veins/modules/application/
 	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
 	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \
 	veins/modules/messages/WaveShortMessage_m.h \
+	veins/modules/mobility/traci/TraCIBuffer.h \
+	veins/modules/mobility/traci/TraCIColor.h \
+	veins/modules/mobility/traci/TraCIConnection.h \
+	veins/modules/mobility/traci/TraCICoord.h \
+	veins/modules/mobility/traci/TraCIScenarioManager.h \
+	veins/modules/obstacle/Obstacle.h \
+	veins/modules/obstacle/ObstacleControl.h \
 	veins/modules/utility/Consts80211p.h \
 	veins/modules/world/annotations/AnnotationManager.h
 $O/veins/modules/application/ieee80211p/BaseWaveApplLayer.o: veins/modules/application/ieee80211p/BaseWaveApplLayer.cc \
