@@ -20,9 +20,13 @@
 #include "veins/modules/mobility/traci/TraCIMobility.h"
 #include "veins/modules/mobility/traci/TraCICommandInterface.h"
 
+#include <iostream>
+#include <mutex>
+
 using Veins::TraCIMobility;
 using Veins::TraCICommandInterface;
 using Veins::AnnotationManager;
+using namespace std;
 
 class Charging1Car : public BaseWaveApplLayer {
     public:
@@ -42,6 +46,18 @@ class Charging1Car : public BaseWaveApplLayer {
         virtual void sendWSM(WaveShortMessage* wsm);
     protected:
         virtual void onTimer(cMessage* msg);
+        std::map<std::string, cModule*> totalVehicles;
+        std::mutex m;
+        static int numCars;
+        static double sumDemand;
+        static double oldSumDemand;
+        double distance;
+        double sumDistance;
+        double chargingRatio;
+        double demand;
+        double oldDemand;
+        const double ChargerLength = 1.7;
+        const double ChargerGap = 0.3;
 };
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING1CAR_H_ */

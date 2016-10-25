@@ -17,8 +17,13 @@
 
 using Veins::TraCIMobilityAccess;
 using Veins::AnnotationManagerAccess;
+using namespace std;
 
 Define_Module(Charging1Car);
+
+int Charging1Car::numCars = 0;
+double Charging1Car::sumDemand = 0;
+double Charging1Car::oldSumDemand = 0;
 
 void Charging1Car::initialize(int stage) {
     BaseWaveApplLayer::initialize(stage);
@@ -28,11 +33,53 @@ void Charging1Car::initialize(int stage) {
         traciVehicle = mobility->getVehicleCommandInterface();
         annotations = AnnotationManagerAccess().getIfExists();
         ASSERT(annotations);
+
+        distance = 0;
+        sumDistance = 0;
+        chargingRatio = 0;
+        demand = 0;
+        oldDemand = 0;
     }
 }
 
 void Charging1Car::onTimer(cMessage* msg) {
- //   DBG << "TimerCar! Name: " << msg->getName() << endl;
+    DBG << "TimerCar! Name: " << msg->getName() << endl;
+
+
+//    if (inc) {
+          chargingRatio++;
+          EV << "chargingRatio: " << chargingRatio << endl;
+
+//   }
+//   else {
+//        decrease(chargingRatio);
+//    }
+
+    distance = mobility->getSpeed()*0.001;
+
+    if ( distance <= ChargerLength )  {
+        sumDistance += distance;
+        demand = chargingRatio;
+    }
+    else if ( distance > ChargerLength && distance < (ChargerLength+ChargerGap) ) {
+        sumDistance += distance;
+        demand = 0;
+    }
+    else {
+        sumDistance += distance - (ChargerLength+ChargerGap);
+        demand = chargingRatio;
+    }
+
+    m.lock();
+    sumDemand += demand - oldDemand;
+    if (oldSumDemand != sumDemand) {
+  //    sendMessage;
+        EV << "Demand: " << sumDemand << endl;
+    }
+    oldSumDemand = sumDemand;
+    m.unlock();
+
+    oldDemand = demand;
 }
 
 void Charging1Car::onBeacon(WaveShortMessage* wsm) {

@@ -20,7 +20,7 @@ using Veins::AnnotationManager;
 class Timer_Car : public cSimpleModule
 {
 protected:
-    simtime_t timeout;  // timeout
+
     cMessage *timeoutEvent;  // holds pointer to the timeout self-message
     int seq;  // message sequence number
     cMessage *message;  // message that has to be re-sent on timeout
@@ -32,6 +32,9 @@ protected:
     AnnotationManager* annotations;
     bool sentMessage;
     int out;
+
+public:
+    const simtime_t car_timeout = 0.001;  // timeout
 
 public:
 

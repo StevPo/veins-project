@@ -49,6 +49,9 @@ class Charging1RSU : public BaseWaveApplLayer {
 
         double totalDemand;
         double chargingRatio;
+        bool inc;
+
+
 };
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING1RSU_H_ */
