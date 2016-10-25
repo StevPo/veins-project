@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<!-- debug config -->
-<launch>
-	<copy file="quickstart.net.xml" />
-	<copy file="quickstart.rou.xml" />
-	<copy file="quickstart.sumocfg" type="config" />
-</launch>
