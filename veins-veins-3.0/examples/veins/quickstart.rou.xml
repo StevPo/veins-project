@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+  <vType accel="300000.0" decel="6.0" id="CarA" length="4.0" minGap="0.0" maxSpeed="2.7" sigma="1" />
+  <vType accel="300000.0" decel="6.0" id="CarB" length="4.0" minGap="0.0" maxSpeed="2.7" sigma="1" />
+  <vType accel="300.0" decel="5.0" id="CarC" length="5.0" minGap="5.5" maxSpeed="100.0" sigma="0" />
+  <vType accel="300.0" decel="5.0" id="CarD" length="7.5" minGap="5.5" maxSpeed="100.0" sigma="0" />
+
+  <route id="route01" edges="D2 L2 L12 L10 L7 D7"/>
+  <route id="route02" edges="D2 L2 L12 L15 L18 L5 D5"/>
+  <route id="route03" edges="D2 L2 L12 L15 L13 L3 D3"/>
+  <route id="route04" edges="D4 L4 L14 L18 L5 D5"/>
+  <route id="route05" edges="D4 L4 L14 L16 L10 L7 D7"/>
+  <route id="route06" edges="D4 L4 L14 L16 L11 L1 D1"/>
+  <route id="route07" edges="D6 L6 L17 L13 L3 D3"/>
+  <route id="route08" edges="D6 L6 L17 L16 L11 L1 D1"/>
+  <route id="route09" edges="D6 L6 L17 L16 L10 L7 D7"/>
+  <route id="route10" edges="D8 L8 L9 L11 L1 D1"/>
+  <route id="route11" edges="D8 L8 L9 L15 L13 L3 D3"/>
+  <route id="route12" edges="D8 L8 L9 L15 L18 L5 D5"/>
+  <route id="route13" edges="D6 L6"/>
+  
+
+  
+   <vehicle depart="0.01" id="veh0" route="route13" type="CarA" />
+  <vehicle depart="3.51" id="veh1" route="route13" type="CarA" />
+  <vehicle depart="7.01" id="veh2" route="route13" type="CarB" />
+  <vehicle depart="10.51" id="veh3" route="route13" type="CarB" />
+  <vehicle depart="14.01" id="veh4" route="route13" type="CarB" />
+  <vehicle depart="17.51" id="veh5" route="route13" type="CarB" />
+  <vehicle depart="21.01" id="veh6" route="route13" type="CarB" />
+  <vehicle depart="24.51" id="veh7" route="route13" type="CarB" />
+  <vehicle depart="28.01" id="veh8" route="route13" type="CarB" />
+  <vehicle depart="31.51" id="veh9" route="route13" type="CarB" />
+  <vehicle depart="35.01" id="veh10" route="route13" type="CarB" />
+  
+  <vehicle depart="38.51" id="veh11" route="route13" type="CarB" />
+  <vehicle depart="42.01" id="veh12" route="route13" type="CarA" />
+  <vehicle depart="45.51" id="veh13" route="route13" type="CarA" />
+  <vehicle depart="49.01" id="veh14" route="route13" type="CarA" />
+  <vehicle depart="52.51" id="veh15" route="route13" type="CarA" />
+  <vehicle depart="56.01" id="veh16" route="route13" type="CarA" />
+  <vehicle depart="59.51" id="veh17" route="route13" type="CarA" />
+  <vehicle depart="63.01" id="veh18" route="route13" type="CarA" />
+  <vehicle depart="66.51" id="veh19" route="route13" type="CarA" />
+  <vehicle depart="70.01" id="veh20" route="route13" type="CarA" />
+  
+  <vehicle depart="73.51" id="veh21" route="route13" type="CarA" />
+  <vehicle depart="77.01" id="veh22" route="route13" type="CarA" />
+  <vehicle depart="80.51" id="veh23" route="route13" type="CarA" />
+  <vehicle depart="84.01" id="veh24" route="route13" type="CarA" />
+  <vehicle depart="87.51" id="veh25" route="route13" type="CarA" />
+  <vehicle depart="91.01" id="veh26" route="route13" type="CarA" />
+  <vehicle depart="94.51" id="veh27" route="route13" type="CarA" />
+  <vehicle depart="98.01" id="veh28" route="route13" type="CarA" />
+  <vehicle depart="101.51" id="veh29" route="route13" type="CarA" />
+  <vehicle depart="105.01" id="veh30" route="route13" type="CarA" />
+  
+  <vehicle depart="108.51" id="veh31" route="route13" type="CarA" />
+  <vehicle depart="112.01" id="veh32" route="route13" type="CarA" />
+  <vehicle depart="115.51" id="veh33" route="route13" type="CarA" />
+  <vehicle depart="119.01" id="veh34" route="route13" type="CarA" />
+  <vehicle depart="122.51" id="veh35" route="route13" type="CarA" />
+  <vehicle depart="126.01" id="veh36" route="route13" type="CarA" />
+  <vehicle depart="129.51" id="veh37" route="route13" type="CarA" />
+  <vehicle depart="133.01" id="veh38" route="route13" type="CarA" />
+  <vehicle depart="136.51" id="veh39" route="route13" type="CarA" />
+  <vehicle depart="140.01" id="veh40" route="route13" type="CarA" />
+  
+  
+  <vehicle depart="143.51" id="veh41" route="route13" type="CarB" />
+  <vehicle depart="147.01" id="veh42" route="route13" type="CarB" />
+  <vehicle depart="150.51" id="veh43" route="route13" type="CarB" />
+  <vehicle depart="154.51" id="veh44" route="route13" type="CarB" />
+  <vehicle depart="158.01" id="veh45" route="route13" type="CarB" />
+  <vehicle depart="161.51" id="veh46" route="route13" type="CarB" />
+  <vehicle depart="165.01" id="veh47" route="route13" type="CarB" />
+  <vehicle depart="168.51" id="veh48" route="route13" type="CarB" />
+  <vehicle depart="172.01" id="veh49" route="route13" type="CarB" />
+  <vehicle depart="175.51" id="veh50" route="route13" type="CarB" />
+  
+  <vehicle depart="179.01" id="veh51" route="route13" type="CarB" />
+  <vehicle depart="182.51" id="veh52" route="route13" type="CarA" />
+  <vehicle depart="186.01" id="veh53" route="route13" type="CarA" />
+  <vehicle depart="189.51" id="veh54" route="route13" type="CarA" />
+  <vehicle depart="193.01" id="veh55" route="route13" type="CarA" />
+  <vehicle depart="196.51" id="veh56" route="route13" type="CarA" />
+  <vehicle depart="200.01" id="veh57" route="route13" type="CarA" />
+  <vehicle depart="203.51" id="veh58" route="route13" type="CarA" />
+  <vehicle depart="207.01" id="veh59" route="route13" type="CarA" />
+  <vehicle depart="210.51" id="veh60" route="route13" type="CarA" />  
+  <vehicle depart="214.01" id="veh62" route="route13" type="CarA" />
+  <vehicle depart="217.51" id="veh63" route="route13" type="CarA" />
+  <vehicle depart="221.01" id="veh64" route="route13" type="CarA" />
+  <vehicle depart="224.51" id="veh65" route="route13" type="CarA" />
+  <vehicle depart="228.01" id="veh66" route="route13" type="CarA" />
+  <vehicle depart="231.51" id="veh67" route="route13" type="CarA" />
+  <vehicle depart="235.01" id="veh68" route="route13" type="CarA" />
+  <vehicle depart="238.51" id="veh69" route="route13" type="CarA" />
+  <vehicle depart="242.01" id="veh70" route="route13" type="CarA" />
+  <vehicle depart="245.51" id="veh71" route="route13" type="CarA" />
+  <vehicle depart="249.01" id="veh72" route="route13" type="CarA" />
+  <vehicle depart="252.51" id="veh73" route="route13" type="CarA" />
+  <vehicle depart="256.01" id="veh74" route="route13" type="CarA" />
+  <vehicle depart="259.51" id="veh75" route="route13" type="CarA" />
+  <vehicle depart="263.01" id="veh76" route="route13" type="CarA" />
+  <vehicle depart="266.51" id="veh77" route="route13" type="CarA" />
+  <vehicle depart="269.51" id="veh78" route="route13" type="CarA" />
+  <vehicle depart="273.01" id="veh79" route="route13" type="CarA" />
+  <vehicle depart="276.51" id="veh80" route="route13" type="CarA" />
+  
+  <vehicle depart="280.01" id="veh81" route="route13" type="CarB" />
+  <vehicle depart="283.51" id="veh82" route="route13" type="CarB" />
+  <vehicle depart="287.01" id="veh83" route="route13" type="CarB" />
+  <vehicle depart="290.51" id="veh84" route="route13" type="CarB" />
+  <vehicle depart="294.01" id="veh85" route="route13" type="CarB" />
+  <vehicle depart="297.51" id="veh86" route="route13" type="CarB" />
+  <vehicle depart="301.01" id="veh87" route="route13" type="CarB" />
+  <vehicle depart="304.51" id="veh88" route="route13" type="CarB" />
+  <vehicle depart="308.01" id="veh89" route="route13" type="CarB" />
+  <vehicle depart="311.51" id="veh100" route="route13" type="CarB" />
+  
+  <vehicle depart="315.01" id="veh101" route="route13" type="CarB" />
+  <vehicle depart="318.51" id="veh102" route="route13" type="CarA" />
+  <vehicle depart="322.01" id="veh103" route="route13" type="CarA" />
+  <vehicle depart="325.51" id="veh104" route="route13" type="CarA" />
+  <vehicle depart="329.01" id="veh105" route="route13" type="CarA" />
+  <vehicle depart="332.51" id="veh106" route="route13" type="CarA" />
+  <vehicle depart="336.01" id="veh107" route="route13" type="CarA" />
+  
+  <vehicle depart="339.51" id="veh108" route="route13" type="CarA" />
+  <vehicle depart="343.01" id="veh109" route="route13" type="CarA" />
+  <vehicle depart="346.51" id="veh110" route="route13" type="CarA" />
+  <vehicle depart="350.01" id="veh111" route="route13" type="CarA" />
+  <vehicle depart="353.51" id="veh112" route="route13" type="CarA" />
+  <vehicle depart="357.01" id="veh113" route="route13" type="CarA" />
+  <vehicle depart="360.51" id="veh114" route="route13" type="CarA" />
+  <vehicle depart="363.51" id="veh115" route="route13" type="CarA" />
+  <vehicle depart="367.01" id="veh116" route="route13" type="CarA" />
+  <vehicle depart="370.51" id="veh117" route="route13" type="CarA" />
+  
+  <vehicle depart="374.01" id="veh118" route="route13" type="CarB" />
+  <vehicle depart="377.51" id="veh119" route="route13" type="CarB" />
+  <vehicle depart="381.01" id="veh120" route="route13" type="CarB" />
+  <vehicle depart="384.51" id="veh121" route="route13" type="CarB" />
+  <vehicle depart="388.01" id="veh122" route="route13" type="CarB" />
+  <vehicle depart="391.51" id="veh123" route="route13" type="CarB" />
+  <vehicle depart="395.01" id="veh124" route="route13" type="CarB" />
+  <vehicle depart="398.51" id="veh125" route="route13" type="CarB" />
+  <vehicle depart="402.01" id="veh126" route="route13" type="CarB" />
+  <vehicle depart="405.51" id="veh127" route="route13" type="CarB" />
+  
+  <vehicle depart="409.01" id="veh128" route="route13" type="CarB" />
+  <vehicle depart="412.51" id="veh129" route="route13" type="CarA" />
+  <vehicle depart="416.01" id="veh130" route="route13" type="CarA" />
+  <vehicle depart="419.51" id="veh131" route="route13" type="CarA" />
+  <vehicle depart="423.01" id="veh132" route="route13" type="CarA" />
+  <vehicle depart="426.51" id="veh133" route="route13" type="CarA" />
+  <vehicle depart="430.01" id="veh134" route="route13" type="CarA" />
+  
+  <vehicle depart="433.51" id="veh135" route="route13" type="CarA" />
+  <vehicle depart="437.01" id="veh136" route="route13" type="CarA" />
+  <vehicle depart="440.51" id="veh137" route="route13" type="CarA" />
+  <vehicle depart="444.01" id="veh138" route="route13" type="CarA" />
+  <vehicle depart="447.51" id="veh139" route="route13" type="CarA" />
+  <vehicle depart="451.01" id="veh140" route="route13" type="CarA" />
+  <vehicle depart="454.51" id="veh141" route="route13" type="CarA" />
+  <vehicle depart="458.01" id="veh142" route="route13" type="CarA" />
+  <vehicle depart="461.51" id="veh143" route="route13" type="CarA" />
+  <vehicle depart="465.01" id="veh144" route="route13" type="CarA" />
+  
+  <vehicle depart="468.51" id="veh145" route="route13" type="CarB" />
+  <vehicle depart="472.01" id="veh146" route="route13" type="CarB" />
+  <vehicle depart="475.51" id="veh147" route="route13" type="CarB" />
+  <vehicle depart="479.01" id="veh148" route="route13" type="CarB" />
+  <vehicle depart="482.51" id="veh149" route="route13" type="CarB" />
+  <vehicle depart="486.01" id="veh150" route="route13" type="CarB" />
+  <vehicle depart="489.51" id="veh151" route="route13" type="CarB" />
+  <vehicle depart="493.01" id="veh152" route="route13" type="CarB" />
+  <vehicle depart="496.51" id="veh153" route="route13" type="CarB" />
+  <vehicle depart="500.01" id="veh154" route="route13" type="CarB" />
+  
+  <vehicle depart="503.51" id="veh155" route="route13" type="CarB" />
+  <vehicle depart="507.01" id="veh156" route="route13" type="CarA" />
+  <vehicle depart="510.51" id="veh157" route="route13" type="CarA" />
+  <vehicle depart="514.01" id="veh158" route="route13" type="CarA" />
+  <vehicle depart="517.51" id="veh159" route="route13" type="CarA" />
+  <vehicle depart="521.01" id="veh160" route="route13" type="CarA" />
+  <vehicle depart="524.51" id="veh161" route="route13" type="CarA" />
+  
+
+</routes>
