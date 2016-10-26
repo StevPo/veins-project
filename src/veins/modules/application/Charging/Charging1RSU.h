@@ -19,6 +19,8 @@
 #include "veins/modules/application/ieee80211p/BaseWaveApplLayer.h"
 #include "veins/modules/world/annotations/AnnotationManager.h"
 #include "veins/modules/mobility/traci/TraCIScenarioManager.h"
+#include "veins/modules/application/Charging/global.h"
+
 #include <iostream>
 
 using Veins::AnnotationManager;
@@ -36,22 +38,10 @@ class Charging1RSU : public BaseWaveApplLayer {
     protected:
         virtual void onBeacon(WaveShortMessage* wsm);
         virtual void onData(WaveShortMessage* wsm);
-        void sendMessage(std::string blockedRoadId);
+        void sendMessage(bool congestion);
         virtual void sendWSM(WaveShortMessage* wsm);
     protected:
         virtual void onTimer(cMessage* msg);
-
-    protected:
-        const int maxSupply = 1000;
-        const double reduce = 0.5;
-
-        std::map<std::string, cModule*> totalVehicles;
-
-        double totalDemand;
-        double chargingRatio;
-        bool inc;
-
-
 };
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING1RSU_H_ */

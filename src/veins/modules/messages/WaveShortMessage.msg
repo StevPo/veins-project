@@ -49,4 +49,6 @@ packet WaveShortMessage {
 	int serial = 0;
 	Coord senderPos;
 	simtime_t timestamp = 0;
+	
+	bool congestion = false;
 }

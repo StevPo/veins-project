@@ -19,6 +19,7 @@
 #include "veins/modules/application/ieee80211p/BaseWaveApplLayer.h"
 #include "veins/modules/mobility/traci/TraCIMobility.h"
 #include "veins/modules/mobility/traci/TraCICommandInterface.h"
+#include "veins/modules/application/Charging/global.h"
 
 #include <iostream>
 #include <mutex>
@@ -48,9 +49,6 @@ class Charging1Car : public BaseWaveApplLayer {
         virtual void onTimer(cMessage* msg);
         std::map<std::string, cModule*> totalVehicles;
         std::mutex m;
-        static int numCars;
-        static double sumDemand;
-        static double oldSumDemand;
         double distance;
         double sumDistance;
         double chargingRatio;

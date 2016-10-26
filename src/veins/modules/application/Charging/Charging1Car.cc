@@ -21,10 +21,6 @@ using namespace std;
 
 Define_Module(Charging1Car);
 
-int Charging1Car::numCars = 0;
-double Charging1Car::sumDemand = 0;
-double Charging1Car::oldSumDemand = 0;
-
 void Charging1Car::initialize(int stage) {
     BaseWaveApplLayer::initialize(stage);
     if (stage == 0) {
@@ -45,16 +41,6 @@ void Charging1Car::initialize(int stage) {
 void Charging1Car::onTimer(cMessage* msg) {
     DBG << "TimerCar! Name: " << msg->getName() << endl;
 
-
-//    if (inc) {
-          chargingRatio++;
-          EV << "chargingRatio: " << chargingRatio << endl;
-
-//   }
-//   else {
-//        decrease(chargingRatio);
-//    }
-
     distance = mobility->getSpeed()*0.001;
 
     if ( distance <= ChargerLength )  {
@@ -72,11 +58,7 @@ void Charging1Car::onTimer(cMessage* msg) {
 
     m.lock();
     sumDemand += demand - oldDemand;
-    if (oldSumDemand != sumDemand) {
-  //    sendMessage;
-        EV << "Demand: " << sumDemand << endl;
-    }
-    oldSumDemand = sumDemand;
+    EV << "Demand: " << sumDemand << endl;
     m.unlock();
 
     oldDemand = demand;
@@ -86,6 +68,15 @@ void Charging1Car::onBeacon(WaveShortMessage* wsm) {
 }
 
 void Charging1Car::onData(WaveShortMessage* wsm) {
+
+    if (!wsm->getCongestion()) {
+        EV << "Congestion: false, increase" << endl;
+        chargingRatio = increase(chargingRatio);
+    }
+    else {
+        EV << "Congestion: true, decrease" << endl;
+        chargingRatio = decrease(chargingRatio);
+    }
 }
 
 void Charging1Car::sendMessage(std::string blockedRoadId) {

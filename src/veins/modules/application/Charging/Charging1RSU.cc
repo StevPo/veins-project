@@ -31,26 +31,17 @@ void Charging1RSU::initialize(int stage) {
         traci = TraCIScenarioManagerAccess().get();
         ASSERT(traci);
         sentMessage = false;
-        chargingRatio = 0;
     }
 }
 
 void Charging1RSU::onTimer(cMessage* msg) {
 
-    totalVehicles = traci->getManagedHosts();
-    EV << "Number of cars: " << totalVehicles.size() << endl;
-
-    totalDemand = totalVehicles.size()*chargingRatio;
-    EV << "Total demand is: " << totalDemand << endl;
-
-    EV << "Charging ratio is: " << chargingRatio << endl;
-
-    if (totalDemand <= maxSupply) {
-        chargingRatio++;
+    if ( sumDemand <= supply ) {
+        sendMessage(false);
     }
-    else chargingRatio = chargingRatio*reduce;
-
-    EV << "New charging ratio is: " << chargingRatio << endl;
+    else {
+        sendMessage(true);
+    }
 
 }
 
@@ -58,10 +49,17 @@ void Charging1RSU::onBeacon(WaveShortMessage* wsm) {
 }
 
 void Charging1RSU::onData(WaveShortMessage* wsm) {
+
 }
 
-void Charging1RSU::sendMessage(std::string blockedRoadId) {
+void Charging1RSU::sendMessage(bool congestion) {
+    sentMessage = true;
+    t_channel channel = dataOnSch ? type_SCH : type_CCH;
+    WaveShortMessage* wsm = prepareWSM("data", dataLengthBits, channel, dataPriority, -1,2);
+    wsm->setCongestion(congestion);
+    sendWSM(wsm);
 }
 
 void Charging1RSU::sendWSM(WaveShortMessage* wsm) {
+    sendDelayedDown(wsm,individualOffset);
 }
