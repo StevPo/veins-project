@@ -57,7 +57,7 @@ void Charging1Car::onTimer(cMessage* msg) {
     }
 
     m.lock();
-    sumDemand += demand - oldDemand;
+    sumDemand += demand- oldDemand;
     EV << "Demand: " << sumDemand << endl;
     m.unlock();
 

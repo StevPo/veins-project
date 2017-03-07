@@ -20,7 +20,7 @@ bool inc = true;
 
 double increase ( double x ) {
     double y;
-    y = x + decFactor;
+    y = x + 1;
     return y;
 }
 
