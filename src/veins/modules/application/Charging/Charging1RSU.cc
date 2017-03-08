@@ -31,10 +31,13 @@ void Charging1RSU::initialize(int stage) {
         traci = TraCIScenarioManagerAccess().get();
         ASSERT(traci);
         sentMessage = false;
+        SumD.setName("Demand");
     }
 }
 
 void Charging1RSU::onTimer(cMessage* msg) {
+
+    SumD.record(sumDemand);
 
     if ( sumDemand <= supply ) {
         sendMessage(false);

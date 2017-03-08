@@ -52,7 +52,9 @@ class Charging1Car : public BaseWaveApplLayer {
         double distance;
         double sumDistance;
         double chargingRatio;
+        cOutVector ChR;
         double demand;
+        cOutVector Dem;
         double oldDemand;
         const double ChargerLength = 1.7;
         const double ChargerGap = 0.3;

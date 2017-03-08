@@ -33,7 +33,9 @@ void Charging1Car::initialize(int stage) {
         distance = 0;
         sumDistance = 0;
         chargingRatio = 0;
+        ChR.setName("ChargingRatio");
         demand = 0;
+        Dem.setName("CarDemand");
         oldDemand = 0;
     }
 }
@@ -43,7 +45,7 @@ void Charging1Car::onTimer(cMessage* msg) {
 
     distance = mobility->getSpeed()*0.001;
 
-/*   if ( distance <= ChargerLength )  {
+   if ( distance <= ChargerLength )  {
         sumDistance += distance;
         demand = chargingRatio;
     }
@@ -55,8 +57,8 @@ void Charging1Car::onTimer(cMessage* msg) {
         sumDistance += distance - (ChargerLength+ChargerGap);
         demand = chargingRatio;
     }
-*/
-    demand = chargingRatio;
+
+    Dem.record(demand);
 
     m.lock();
     sumDemand += demand - oldDemand;
@@ -79,6 +81,7 @@ void Charging1Car::onData(WaveShortMessage* wsm) {
         EV << "Congestion: true, decrease" << endl;
         chargingRatio = decrease(chargingRatio);
     }
+    ChR.record(chargingRatio);
 }
 
 void Charging1Car::sendMessage(std::string blockedRoadId) {

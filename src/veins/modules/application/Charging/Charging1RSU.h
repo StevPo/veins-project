@@ -42,6 +42,7 @@ class Charging1RSU : public BaseWaveApplLayer {
         virtual void sendWSM(WaveShortMessage* wsm);
     protected:
         virtual void onTimer(cMessage* msg);
+        cOutVector SumD;
 };
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING1RSU_H_ */
