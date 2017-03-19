@@ -32,11 +32,13 @@ void Charging1Car::initialize(int stage) {
 
         distance = 0;
         sumDistance = 0;
-        chargingRatio = 0;
+        chargingRatio = 1;
         ChR.setName("ChargingRatio");
         demand = 0;
         Dem.setName("CarDemand");
         oldDemand = 0;
+        incFactor = getParentModule()->par("incFactor").doubleValue();
+        decFactor = getParentModule()->par("decFactor").doubleValue();
     }
 }
 
@@ -75,11 +77,11 @@ void Charging1Car::onData(WaveShortMessage* wsm) {
 
     if (!wsm->getCongestion()) {
         EV << "Congestion: false, increase" << endl;
-        chargingRatio = increase(chargingRatio);
+        chargingRatio += incFactor;
     }
     else {
         EV << "Congestion: true, decrease" << endl;
-        chargingRatio = decrease(chargingRatio);
+        chargingRatio *= decFactor;
     }
     ChR.record(chargingRatio);
 }

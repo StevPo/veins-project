@@ -18,14 +18,3 @@
 double sumDemand = 0;
 bool inc = true;
 
-double increase ( double x ) {
-    double y;
-    y = x + 1;
-    return y;
-}
-
-double decrease ( double x ) {
-    double y;
-    y = x * decFactor;
-    return y;
-}

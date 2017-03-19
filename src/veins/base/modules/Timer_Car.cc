@@ -38,15 +38,13 @@ void Timer_Car::initialize(int stage)
 {
     cSimpleModule::initialize(stage);
 
-
-
-    //100 millisecond timer period
+    car_timeout = getParentModule()->par("CarTimer").doubleValue(); //100 millisecond timer period
     timeoutEvent = new cMessage("timeoutEvent");
 
     // Generate and send initial message.
     EV << "Sending initial message\n";
     message = generateNewMessage();
-    scheduleAt(simTime()+car_timeout, timeoutEvent);
+    scheduleAt(simTime()+simtime_t(car_timeout), timeoutEvent);
 
 }
 
@@ -54,7 +52,7 @@ void Timer_Car::handleMessage(cMessage *msg)
 {
 
     sendCopyOf(message);
-    scheduleAt(simTime()+car_timeout, timeoutEvent);
+    scheduleAt(simTime()+simtime_t(car_timeout), timeoutEvent);
 
 }
 

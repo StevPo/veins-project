@@ -30,7 +30,8 @@ protected:
     int out;
 
 public:
-    const simtime_t rsu_timeout = 0.1;  // timeout
+    double rsu_timeout;
+//    const simtime_t rsu_timeout = 0.1;  // timeout
 
 public:
 

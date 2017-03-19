@@ -24,8 +24,6 @@ protected:
     cMessage *timeoutEvent;  // holds pointer to the timeout self-message
     int seq;  // message sequence number
     cMessage *message;  // message that has to be re-sent on timeout
-    double chargingPadLength;
-    double spacingLength;
     TraCIMobility* traci;
 
 protected:
@@ -34,7 +32,7 @@ protected:
     int out;
 
 public:
-    const simtime_t car_timeout = 0.001;  // timeout
+    double car_timeout;
 
 public:
 

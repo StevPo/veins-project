@@ -32,7 +32,6 @@ using namespace std;
 class Charging1Car : public BaseWaveApplLayer {
     public:
         virtual void initialize(int stage);
-//        virtual void receiveSignal(cComponent* source, simsignal_t signalID, cObject* obj, cObject* details);
     protected:
         TraCIMobility* mobility;
         TraCICommandInterface* traci;
@@ -42,8 +41,6 @@ class Charging1Car : public BaseWaveApplLayer {
         virtual void onBeacon(WaveShortMessage* wsm);
         virtual void onData(WaveShortMessage* wsm);
         void sendMessage(std::string blockedRoadId);
-//        virtual void handlePositionUpdate(cObject* obj);
-//        virtual void handleParkingUpdate(cObject* obj);
         virtual void sendWSM(WaveShortMessage* wsm);
     protected:
         virtual void onTimer(cMessage* msg);
@@ -58,6 +55,8 @@ class Charging1Car : public BaseWaveApplLayer {
         double oldDemand;
         const double ChargerLength = 1.7;
         const double ChargerGap = 0.3;
+        double incFactor;
+        double decFactor;
 };
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING1CAR_H_ */

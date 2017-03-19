@@ -15,8 +15,4 @@
 
 extern double sumDemand;
 extern bool inc;
-static const double decFactor = 0.5;
 static const double supply = 100;
-
-double increase ( double x );
-double decrease ( double x );

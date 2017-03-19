@@ -28,7 +28,11 @@ module Car
     parameters:
         string applType; //type of the application layer
         string nicType = default("Nic80211p"); // type of network interface card
-        string veinsmobilityType; //type of the mobility module
+        string veinsmobilityType; //type of the mobility module 
+        
+        double CarTimer @unit(s) = default(0.001s);
+        double incFactor = default(1.1);
+        double decFactor = default(0.5);
     gates:
         input veinsradioIn; // gate for sendDirect
     submodules:

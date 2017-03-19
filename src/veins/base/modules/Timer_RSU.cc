@@ -36,19 +36,19 @@ void Timer_RSU::initialize(int stage)
 {
     cSimpleModule::initialize(stage);
 
-    //100 millisecond timer period
+    rsu_timeout = getParentModule()->par("RSUTimer").doubleValue(); //100 millisecond timer period
     timeoutEvent = new cMessage("timeoutEvent");
 
     // Generate and send initial message.
     EV << "Sending initial message\n";
     message = generateNewMessage();
-    scheduleAt(simTime()+rsu_timeout, timeoutEvent);
+    scheduleAt(simTime()+simtime_t(rsu_timeout), timeoutEvent);
 }
 
 void Timer_RSU::handleMessage(cMessage *msg)
 {
     sendCopyOf(message);
-    scheduleAt(simTime()+rsu_timeout, timeoutEvent);
+    scheduleAt(simTime()+simtime_t(rsu_timeout), timeoutEvent);
 }
 
 cMessage *Timer_RSU::generateNewMessage()
