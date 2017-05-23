@@ -17,4 +17,3 @@
 
 double sumDemand = 0;
 bool inc = true;
-

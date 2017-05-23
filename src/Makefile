@@ -2,14 +2,14 @@
 # OMNeT++/OMNEST Makefile for libveins
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep --make-so -O out --no-deep-includes -I/home/stavros/veins-project/src
+#  opp_makemake -f --deep --make-so -O out --no-deep-includes -I/home/stavros/veins-project/src -I../inet/src -I../inet/src/inet/common/geometry/common
 #
 
 # Name of target to be created (-o option)
 TARGET = libveins$(SHARED_LIB_SUFFIX)
 
 # C++ include paths (with -I)
-INCLUDE_PATH = -I.
+INCLUDE_PATH = -I. -I../inet/src -I../inet/src/inet/common/geometry/common
 
 # Additional object and library files to link with
 EXTRA_OBJS =
@@ -61,7 +61,9 @@ OBJS = \
     $O/veins/modules/analogueModel/BreakpointPathlossModel.o \
     $O/veins/modules/analogueModel/JakesFading.o \
     $O/veins/modules/analogueModel/SimpleObstacleShadowing.o \
+    $O/veins/modules/application/Charging/Charging2Car.o \
     $O/veins/modules/application/Charging/global.o \
+    $O/veins/modules/application/Charging/Charging2RSU.o \
     $O/veins/modules/application/Charging/Charging1Car.o \
     $O/veins/modules/application/Charging/Charging1RSU.o \
     $O/veins/modules/application/ieee80211p/BaseWaveApplLayer.o \
@@ -547,6 +549,12 @@ $O/veins/base/phyLayer/Signal.o: veins/base/phyLayer/Signal.cc \
 	veins/base/utils/MiXiMDefs.h \
 	veins/base/utils/miximkerneldefs.h
 $O/veins/base/utils/Coord.o: veins/base/utils/Coord.cc \
+	../inet/src/inet/common/Compat.h \
+	../inet/src/inet/common/INETDefs.h \
+	../inet/src/inet/common/INETMath.h \
+	../inet/src/inet/common/InitStages.h \
+	../inet/src/inet/common/geometry/common/Coord.h \
+	../inet/src/inet/features.h \
 	veins/base/utils/Coord.h \
 	veins/base/utils/FWMath.h \
 	veins/base/utils/MiXiMDefs.h \
@@ -745,6 +753,78 @@ $O/veins/modules/application/Charging/Charging1RSU.o: veins/modules/application/
 	veins/base/utils/SimpleAddress.h \
 	veins/base/utils/miximkerneldefs.h \
 	veins/modules/application/Charging/Charging1RSU.h \
+	veins/modules/application/Charging/global.h \
+	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
+	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \
+	veins/modules/messages/WaveShortMessage_m.h \
+	veins/modules/mobility/traci/TraCIBuffer.h \
+	veins/modules/mobility/traci/TraCIColor.h \
+	veins/modules/mobility/traci/TraCIConnection.h \
+	veins/modules/mobility/traci/TraCICoord.h \
+	veins/modules/mobility/traci/TraCIScenarioManager.h \
+	veins/modules/obstacle/Obstacle.h \
+	veins/modules/obstacle/ObstacleControl.h \
+	veins/modules/utility/Consts80211p.h \
+	veins/modules/world/annotations/AnnotationManager.h
+$O/veins/modules/application/Charging/Charging2Car.o: veins/modules/application/Charging/Charging2Car.cc \
+	veins/base/connectionManager/BaseConnectionManager.h \
+	veins/base/connectionManager/ChannelAccess.h \
+	veins/base/connectionManager/NicEntry.h \
+	veins/base/modules/BaseApplLayer.h \
+	veins/base/modules/BaseBattery.h \
+	veins/base/modules/BaseLayer.h \
+	veins/base/modules/BaseMobility.h \
+	veins/base/modules/BaseModule.h \
+	veins/base/modules/BaseWorldUtility.h \
+	veins/base/modules/BatteryAccess.h \
+	veins/base/utils/Coord.h \
+	veins/base/utils/FWMath.h \
+	veins/base/utils/FindModule.h \
+	veins/base/utils/HostState.h \
+	veins/base/utils/MiXiMDefs.h \
+	veins/base/utils/Move.h \
+	veins/base/utils/NetwToMacControlInfo.h \
+	veins/base/utils/PassedMessage.h \
+	veins/base/utils/SimpleAddress.h \
+	veins/base/utils/miximkerneldefs.h \
+	veins/modules/application/Charging/Charging2Car.h \
+	veins/modules/application/Charging/global.h \
+	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
+	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \
+	veins/modules/messages/WaveShortMessage_m.h \
+	veins/modules/mobility/traci/TraCIBuffer.h \
+	veins/modules/mobility/traci/TraCIColor.h \
+	veins/modules/mobility/traci/TraCICommandInterface.h \
+	veins/modules/mobility/traci/TraCIConnection.h \
+	veins/modules/mobility/traci/TraCICoord.h \
+	veins/modules/mobility/traci/TraCIMobility.h \
+	veins/modules/mobility/traci/TraCIScenarioManager.h \
+	veins/modules/obstacle/Obstacle.h \
+	veins/modules/obstacle/ObstacleControl.h \
+	veins/modules/utility/Consts80211p.h \
+	veins/modules/world/annotations/AnnotationManager.h
+$O/veins/modules/application/Charging/Charging2RSU.o: veins/modules/application/Charging/Charging2RSU.cc \
+	veins/base/connectionManager/BaseConnectionManager.h \
+	veins/base/connectionManager/ChannelAccess.h \
+	veins/base/connectionManager/NicEntry.h \
+	veins/base/modules/BaseApplLayer.h \
+	veins/base/modules/BaseBattery.h \
+	veins/base/modules/BaseLayer.h \
+	veins/base/modules/BaseMobility.h \
+	veins/base/modules/BaseModule.h \
+	veins/base/modules/BaseWorldUtility.h \
+	veins/base/modules/BatteryAccess.h \
+	veins/base/utils/Coord.h \
+	veins/base/utils/FWMath.h \
+	veins/base/utils/FindModule.h \
+	veins/base/utils/HostState.h \
+	veins/base/utils/MiXiMDefs.h \
+	veins/base/utils/Move.h \
+	veins/base/utils/NetwToMacControlInfo.h \
+	veins/base/utils/PassedMessage.h \
+	veins/base/utils/SimpleAddress.h \
+	veins/base/utils/miximkerneldefs.h \
+	veins/modules/application/Charging/Charging2RSU.h \
 	veins/modules/application/Charging/global.h \
 	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
 	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \

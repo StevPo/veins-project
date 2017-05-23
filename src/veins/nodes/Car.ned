@@ -33,6 +33,10 @@ module Car
         double CarTimer @unit(s) = default(0.001s);
         double incFactor = default(1.1);
         double decFactor = default(0.5);
+        double a = default(0.85);
+        double w = default(0.01);
+        double g = default(0.1);
+        double BatterySize = default(10);
     gates:
         input veinsradioIn; // gate for sendDirect
     submodules:

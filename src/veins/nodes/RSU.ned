@@ -30,6 +30,9 @@ module RSU
         string nicType = default("Nic80211p"); // type of network interface card
        
         double RSUTimer @unit(s) = default(0.1s);
+        double alpha = default(0.0012);
+        double kappa = default(5);
+        double minPrice = default(0.5);
     gates:
         input veinsradioIn; // gate for sendDirect
     submodules:
