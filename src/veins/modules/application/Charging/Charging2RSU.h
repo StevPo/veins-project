@@ -19,7 +19,6 @@
 #include "veins/modules/application/ieee80211p/BaseWaveApplLayer.h"
 #include "veins/modules/world/annotations/AnnotationManager.h"
 #include "veins/modules/mobility/traci/TraCIScenarioManager.h"
-#include "veins/modules/application/Charging/global.h"
 #include <math.h>
 
 #include <iostream>
@@ -44,11 +43,15 @@ class Charging2RSU : public BaseWaveApplLayer {
     protected:
         virtual void onTimer(cMessage* msg);
         cOutVector SumD;
+        double supply;
         double alpha;
         double kappa;
         double minPrice;
         double price;
         cOutVector Price;
 };
+
+extern double sumDemand;
+
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING2RSU_H_ */

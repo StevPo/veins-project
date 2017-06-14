@@ -28,9 +28,10 @@ module RSU
     parameters:
         string applType; //type of the application layer
         string nicType = default("Nic80211p"); // type of network interface card
-       
+        
+        double supply = default(10);
         double RSUTimer @unit(s) = default(0.1s);
-        double alpha = default(0.0012);
+        double al = default(0.0012);
         double kappa = default(5);
         double minPrice = default(0.5);
     gates:

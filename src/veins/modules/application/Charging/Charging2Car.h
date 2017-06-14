@@ -19,7 +19,6 @@
 #include "veins/modules/application/ieee80211p/BaseWaveApplLayer.h"
 #include "veins/modules/mobility/traci/TraCIMobility.h"
 #include "veins/modules/mobility/traci/TraCICommandInterface.h"
-#include "veins/modules/application/Charging/global.h"
 
 #include <iostream>
 #include <mutex>
@@ -32,6 +31,7 @@ using namespace std;
 class Charging2Car : public BaseWaveApplLayer {
     public:
         virtual void initialize(int stage);
+        virtual void finish();
     protected:
         TraCIMobility* mobility;
         TraCICommandInterface* traci;
@@ -43,25 +43,30 @@ class Charging2Car : public BaseWaveApplLayer {
         void sendMessage(std::string blockedRoadId);
         virtual void sendWSM(WaveShortMessage* wsm);
     protected:
-        //virtual void onTimer(cMessage* msg);
         std::map<std::string, cModule*> totalVehicles;
         std::mutex m;
         double distance;
         double sumDistance;
         double chargingRatio;
         cOutVector ChR;
+        double timestampEnergy;
+        cOutVector E;
+        double carEnergy;
         double demand;
-        double SoC;
-        double a;
         double BatterySize;
+        double SoC;
+        cOutVector state;
+        double cost;
+        cOutVector C;
+        double sumCost;
+        double maxChargingRate;
+        double a;
         double w;
         double g;
         cOutVector Dem;
         double oldDemand;
         const double ChargerLength = 1.7;
         const double ChargerGap = 0.3;
-        double incFactor;
-        double decFactor;
 };
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING1CAR_H_ */

@@ -14,6 +14,7 @@
 // 
 
 #include "veins/modules/application/Charging/Charging1RSU.h"
+#include "veins/modules/application/Charging/Charging2RSU.h"
 
 using Veins::AnnotationManagerAccess;
 using Veins::TraCIScenarioManagerAccess;
@@ -32,6 +33,7 @@ void Charging1RSU::initialize(int stage) {
         ASSERT(traci);
         sentMessage = false;
         SumD.setName("Demand");
+        supply = getParentModule()->par("supply").doubleValue();
     }
 }
 

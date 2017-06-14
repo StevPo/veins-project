@@ -19,6 +19,8 @@ using Veins::AnnotationManagerAccess;
 using Veins::TraCIScenarioManagerAccess;
 using namespace std;
 
+double sumDemand = 0;
+
 Define_Module(Charging2RSU);
 
 void Charging2RSU::initialize(int stage) {
@@ -31,12 +33,14 @@ void Charging2RSU::initialize(int stage) {
         traci = TraCIScenarioManagerAccess().get();
         ASSERT(traci);
         sentMessage = false;
-        SumD.setName("Demand");
-        alpha = getParentModule()->par("alpha").doubleValue();
+
+        SumD.setName("Demand (100kW)");
+        supply = getParentModule()->par("supply").doubleValue();
+        alpha = getParentModule()->par("al").doubleValue();
         kappa = getParentModule()->par("kappa").doubleValue();
         minPrice = getParentModule()->par("minPrice").doubleValue();
         price = minPrice;
-        Price.setName("Price");
+        Price.setName("Price (cents/kWh)");
     }
 }
 
@@ -44,7 +48,8 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
     SumD.record(sumDemand);
 
-    price = alpha*(pow(sumDemand,kappa));
+    /* Evaluate price p[i] (cents/kWh) */
+    price = alpha*(pow((sumDemand/supply),kappa));
     Price.record(price);
     sendMessage(price);
 

@@ -19,7 +19,6 @@
 #include "veins/modules/application/ieee80211p/BaseWaveApplLayer.h"
 #include "veins/modules/world/annotations/AnnotationManager.h"
 #include "veins/modules/mobility/traci/TraCIScenarioManager.h"
-#include "veins/modules/application/Charging/global.h"
 
 #include <iostream>
 
@@ -42,7 +41,9 @@ class Charging1RSU : public BaseWaveApplLayer {
         virtual void sendWSM(WaveShortMessage* wsm);
     protected:
         virtual void onTimer(cMessage* msg);
+
         cOutVector SumD;
+        double supply;
 };
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING1RSU_H_ */

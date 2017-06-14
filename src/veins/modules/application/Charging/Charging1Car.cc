@@ -14,6 +14,7 @@
 // 
 
 #include "veins/modules/application/Charging/Charging1Car.h"
+#include "veins/modules/application/Charging/Charging2RSU.h"
 
 using Veins::TraCIMobilityAccess;
 using Veins::AnnotationManagerAccess;

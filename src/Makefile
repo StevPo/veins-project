@@ -62,7 +62,6 @@ OBJS = \
     $O/veins/modules/analogueModel/JakesFading.o \
     $O/veins/modules/analogueModel/SimpleObstacleShadowing.o \
     $O/veins/modules/application/Charging/Charging2Car.o \
-    $O/veins/modules/application/Charging/global.o \
     $O/veins/modules/application/Charging/Charging2RSU.o \
     $O/veins/modules/application/Charging/Charging1Car.o \
     $O/veins/modules/application/Charging/Charging1RSU.o \
@@ -716,7 +715,7 @@ $O/veins/modules/application/Charging/Charging1Car.o: veins/modules/application/
 	veins/base/utils/SimpleAddress.h \
 	veins/base/utils/miximkerneldefs.h \
 	veins/modules/application/Charging/Charging1Car.h \
-	veins/modules/application/Charging/global.h \
+	veins/modules/application/Charging/Charging2RSU.h \
 	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
 	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \
 	veins/modules/messages/WaveShortMessage_m.h \
@@ -753,7 +752,7 @@ $O/veins/modules/application/Charging/Charging1RSU.o: veins/modules/application/
 	veins/base/utils/SimpleAddress.h \
 	veins/base/utils/miximkerneldefs.h \
 	veins/modules/application/Charging/Charging1RSU.h \
-	veins/modules/application/Charging/global.h \
+	veins/modules/application/Charging/Charging2RSU.h \
 	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
 	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \
 	veins/modules/messages/WaveShortMessage_m.h \
@@ -788,7 +787,7 @@ $O/veins/modules/application/Charging/Charging2Car.o: veins/modules/application/
 	veins/base/utils/SimpleAddress.h \
 	veins/base/utils/miximkerneldefs.h \
 	veins/modules/application/Charging/Charging2Car.h \
-	veins/modules/application/Charging/global.h \
+	veins/modules/application/Charging/Charging2RSU.h \
 	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
 	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \
 	veins/modules/messages/WaveShortMessage_m.h \
@@ -825,7 +824,6 @@ $O/veins/modules/application/Charging/Charging2RSU.o: veins/modules/application/
 	veins/base/utils/SimpleAddress.h \
 	veins/base/utils/miximkerneldefs.h \
 	veins/modules/application/Charging/Charging2RSU.h \
-	veins/modules/application/Charging/global.h \
 	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
 	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \
 	veins/modules/messages/WaveShortMessage_m.h \
@@ -838,8 +836,6 @@ $O/veins/modules/application/Charging/Charging2RSU.o: veins/modules/application/
 	veins/modules/obstacle/ObstacleControl.h \
 	veins/modules/utility/Consts80211p.h \
 	veins/modules/world/annotations/AnnotationManager.h
-$O/veins/modules/application/Charging/global.o: veins/modules/application/Charging/global.cc \
-	veins/modules/application/Charging/global.h
 $O/veins/modules/application/ieee80211p/BaseWaveApplLayer.o: veins/modules/application/ieee80211p/BaseWaveApplLayer.cc \
 	veins/base/connectionManager/ChannelAccess.h \
 	veins/base/modules/BaseApplLayer.h \
