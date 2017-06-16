@@ -51,4 +51,5 @@ packet WaveShortMessage {
 	simtime_t timestamp = 0;
 	
 	bool congestion = false;
+	double price = 0;
 }

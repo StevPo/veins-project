@@ -36,7 +36,7 @@ void Charging2RSU::initialize(int stage) {
 
         SumD.setName("Demand (100kW)");
         supply = getParentModule()->par("supply").doubleValue();
-        alpha = getParentModule()->par("al").doubleValue();
+        alpha = getParentModule()->par("alpha_init").doubleValue();
         kappa = getParentModule()->par("kappa").doubleValue();
         minPrice = getParentModule()->par("minPrice").doubleValue();
         price = minPrice;
@@ -50,7 +50,14 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
     /* Evaluate price p[i] (cents/kWh) */
     price = alpha*(pow((sumDemand/supply),kappa));
+    if (price < minPrice) {
+        price = minPrice;
+    }
     Price.record(price);
+
+    //EV << "SumDemand: " << sumDemand << endl;
+    //EV << "Price: " << price << endl;
+
     sendMessage(price);
 
 }
