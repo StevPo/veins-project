@@ -36,7 +36,7 @@ module Car
         
         double BatterySize = default(20);
         double initialSoC = default(0.5);
-        double maxPower = default(3);
+        double maxChargingRate = default(3);
         double a = default(0.85);
         double w = default(0.01);
         double g = default(0.1);

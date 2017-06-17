@@ -42,9 +42,16 @@ class Charging2RSU : public BaseWaveApplLayer {
         virtual void sendWSM(WaveShortMessage* wsm);
     protected:
         virtual void onTimer(cMessage* msg);
+
+        /* sumDemand (extern) */
         cOutVector SumD;
+
+        /* Network supply (max load) */
         double supply;
+
+        /* Price parameters */
         double alpha;
+        double a_factor;
         double kappa;
         double minPrice;
         double price;

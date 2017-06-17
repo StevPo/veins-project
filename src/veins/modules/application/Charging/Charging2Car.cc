@@ -31,26 +31,41 @@ void Charging2Car::initialize(int stage) {
         annotations = AnnotationManagerAccess().getIfExists();
         ASSERT(annotations);
 
+        /* Charging1 */
         distance = 0;
         sumDistance = 0;
         chargingRatio = 1;
         ChR.setName("ChargingRatio");
+
+        /* Charging2 */
+
+        /* Energy absorbed by car in a timestamp */
         timestampEnergy = 0;
         E.setName("timestampEnergy (kWh)");
+
+        /* Sum Energy absorbed by car */
         carEnergy = 0;
-        demand = g*w;
-        BatterySize = getParentModule()->par("BatterySize").doubleValue();
-        SoC = getParentModule()->par("initialSoC").doubleValue();
-        state.setName("SoC");
+
+        /* Cost of energy absorbed during timestamp and whole */
         cost = 0;
         C.setName("Cost (cents)");
         sumCost = 0;
-        maxChargingRate = getParentModule()->par("maxPower").doubleValue();
-        a = getParentModule()->par("a").doubleValue();
-        w = getParentModule()->par("w").doubleValue();
-        g = getParentModule()->par("g").doubleValue();
+
+        /* Initial demand */
+        demand = g*w;
         Dem.setName("CarDemand (100kW)");
         oldDemand = 0;
+
+        /* Parameters */
+        BatterySize = getParentModule()->par("BatterySize").doubleValue();
+        SoC = getParentModule()->par("initialSoC").doubleValue();
+        state.setName("SoC");
+        maxChargingRate = getParentModule()->par("maxChargingRate").doubleValue();
+        /* Charging efficiency */
+        a = getParentModule()->par("a").doubleValue();
+        /* Demand parameters */
+        w = getParentModule()->par("w").doubleValue();
+        g = getParentModule()->par("g").doubleValue();
     }
 }
 
@@ -64,11 +79,14 @@ void Charging2Car::onData(WaveShortMessage* wsm) {
     E.record(timestampEnergy);
     carEnergy += timestampEnergy;
 
+    /* Cost of charging during i interval C[i] (cents) */
+    cost = timestampEnergy * wsm->getPrice();
+    C.record(cost);
+    sumCost += cost;
+
     /* State of Charge */
     SoC += a*timestampEnergy/BatterySize;
     state.record(SoC);
-
-    //EV << "SoC: " << SoC << endl;
 
     /* Car Demand x[i] (100kW) */
     if (SoC < 1) {
@@ -79,17 +97,9 @@ void Charging2Car::onData(WaveShortMessage* wsm) {
     }
     Dem.record(demand);
 
-    //EV << "Demand: " << demand << endl;
-
-    /* Cost of charging during i interval C[i] (cents) */
-    cost = timestampEnergy * wsm->getPrice();
-    C.record(cost);
-    sumCost += cost;
-
     /* Add to sumDemand x (100kWh) */
     m.lock();
     sumDemand += demand - oldDemand;
-    //EV << "SumDemand: " << sumDemand << endl;
     m.unlock();
 
     oldDemand = demand;

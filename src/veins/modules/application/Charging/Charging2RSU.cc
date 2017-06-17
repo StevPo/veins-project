@@ -34,9 +34,15 @@ void Charging2RSU::initialize(int stage) {
         ASSERT(traci);
         sentMessage = false;
 
+        /* SumDemand */
         SumD.setName("Demand (100kW)");
+
+        /* Network supply (max load) */
         supply = getParentModule()->par("supply").doubleValue();
+
+        /* Price parameters */
         alpha = getParentModule()->par("alpha_init").doubleValue();
+        a_factor = 1;
         kappa = getParentModule()->par("kappa").doubleValue();
         minPrice = getParentModule()->par("minPrice").doubleValue();
         price = minPrice;
@@ -48,18 +54,21 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
     SumD.record(sumDemand);
 
+    /* Evaluate a_facter & alpha due to network constrictions */
+    if (sumDemand > supply) {
+        a_factor += 0.1;
+    }
+    alpha = a_factor*price/pow(supply,kappa);
+
     /* Evaluate price p[i] (cents/kWh) */
-    price = alpha*(pow((sumDemand/supply),kappa));
+    price = alpha*(pow(sumDemand,kappa));
     if (price < minPrice) {
         price = minPrice;
     }
     Price.record(price);
 
-    //EV << "SumDemand: " << sumDemand << endl;
-    //EV << "Price: " << price << endl;
-
+    /* Send new price to EVs */
     sendMessage(price);
-
 }
 
 void Charging2RSU::onBeacon(WaveShortMessage* wsm) {

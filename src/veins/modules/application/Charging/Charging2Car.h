@@ -45,28 +45,45 @@ class Charging2Car : public BaseWaveApplLayer {
     protected:
         std::map<std::string, cModule*> totalVehicles;
         std::mutex m;
+
+        /* Charging1 */
         double distance;
         double sumDistance;
         double chargingRatio;
         cOutVector ChR;
+
+        const double ChargerLength = 1.7;
+        const double ChargerGap = 0.3;
+
+        /* Charging2 */
+
+        /* Energy absorbed by car in a timestamp */
         double timestampEnergy;
         cOutVector E;
+
+        /* Sum Energy absorbed by car */
         double carEnergy;
-        double demand;
-        double BatterySize;
-        double SoC;
-        cOutVector state;
+
+        /* Cost of energy absorbed during timestamp and whole */
         double cost;
         cOutVector C;
         double sumCost;
-        double maxChargingRate;
-        double a;
-        double w;
-        double g;
+
+        /* CarDemand */
+        double demand;
         cOutVector Dem;
         double oldDemand;
-        const double ChargerLength = 1.7;
-        const double ChargerGap = 0.3;
+
+        /* Parameters */
+        double BatterySize;
+        double SoC;
+        cOutVector state;
+        double maxChargingRate;
+        /* Charging efficiency */
+        double a;
+        /* Demand parameters */
+        double w;
+        double g;
 };
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING1CAR_H_ */
