@@ -52,7 +52,7 @@ void Charging2Car::initialize(int stage) {
         sumCost = 0;
 
         /* Initial demand */
-        demand = g*w;
+        demand = 0;
         Dem.setName("CarDemand (100kW)");
         oldDemand = 0;
 
@@ -95,6 +95,7 @@ void Charging2Car::onData(WaveShortMessage* wsm) {
     else {
         demand = 0;
     }
+
     Dem.record(demand);
 
     /* Add to sumDemand x (100kWh) */
@@ -115,8 +116,8 @@ void Charging2Car::finish() {
     EV << "Demand: " << sumDemand << endl;
     m.unlock();
 
-    recordScalar("Car charging cost", sumCost);
-    recordScalar("Car charged energy", carEnergy);
+    recordScalar("Car charging cost (cents)", sumCost);
+    recordScalar("Car charged energy (kWh)", carEnergy);
 
 }
 

@@ -50,12 +50,18 @@ class Charging2RSU : public BaseWaveApplLayer {
         double supply;
 
         /* Price parameters */
-        double alpha;
-        double a_factor;
         double kappa;
         double minPrice;
         double price;
         cOutVector Price;
+        double alpha;
+        cOutVector Alpha;
+        /* alpha parameters */
+        double a_factor;
+        cOutVector aFactor;
+        int counter;
+        bool flag;
+        int decrease;
 };
 
 extern double sumDemand;

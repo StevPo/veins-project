@@ -41,12 +41,18 @@ void Charging2RSU::initialize(int stage) {
         supply = getParentModule()->par("supply").doubleValue();
 
         /* Price parameters */
-        alpha = getParentModule()->par("alpha_init").doubleValue();
-        a_factor = 1;
         kappa = getParentModule()->par("kappa").doubleValue();
         minPrice = getParentModule()->par("minPrice").doubleValue();
         price = minPrice;
         Price.setName("Price (cents/kWh)");
+        alpha = getParentModule()->par("alpha_init").doubleValue();
+        Alpha.setName("alpha price");
+        /* alpha parameters */
+        a_factor = 1;
+        aFactor.setName("a_factor");
+        counter = 0;
+        flag = false;
+        decrease = 0;
     }
 }
 
@@ -55,10 +61,24 @@ void Charging2RSU::onTimer(cMessage* msg) {
     SumD.record(sumDemand);
 
     /* Evaluate a_facter & alpha due to network constrictions */
-    if (sumDemand > supply) {
-        a_factor += 0.1;
+    if (sumDemand > 1.05*supply) {
+        a_factor += 0.05;
+        flag = true;
+        counter = 0;
     }
+
+    else if (sumDemand < 0.999*supply && flag && counter < 150) {
+        counter++;
+    }
+    else if (sumDemand < 0.999*supply && flag) {
+        a_factor -= 0.05;
+        counter = 0;
+    }
+
+    aFactor.record(a_factor);
+
     alpha = a_factor*price/pow(supply,kappa);
+    Alpha.record(alpha);
 
     /* Evaluate price p[i] (cents/kWh) */
     price = alpha*(pow(sumDemand,kappa));
