@@ -32,6 +32,8 @@ module RSU
         double supply = default(10);
         double RSUTimer @unit(s) = default(0.1s);
         double alpha_init = default(0.0012);
+        double supply_limit = default(0.05); 
+        double max_counter = default(100);
         double kappa = default(5);
         double minPrice = default(0.5);
     gates:

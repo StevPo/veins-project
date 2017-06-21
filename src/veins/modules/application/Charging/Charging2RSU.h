@@ -59,6 +59,8 @@ class Charging2RSU : public BaseWaveApplLayer {
         /* alpha parameters */
         double a_factor;
         cOutVector aFactor;
+        double supply_limit;
+        int max_counter;
         int counter;
         bool flag;
         int decrease;

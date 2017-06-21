@@ -50,6 +50,8 @@ void Charging2RSU::initialize(int stage) {
         /* alpha parameters */
         a_factor = 1;
         aFactor.setName("a_factor");
+        supply_limit = getParentModule()->par("supply_limit").doubleValue();
+        max_counter = getParentModule()->par("max_counter").doubleValue();
         counter = 0;
         flag = false;
         decrease = 0;
@@ -60,14 +62,14 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
     SumD.record(sumDemand);
 
-    /* Evaluate a_facter & alpha due to network constrictions */
-    if (sumDemand > 1.05*supply) {
+    /* Evaluate a_factor & alpha due to network constrictions */
+    if (sumDemand > (1+supply_limit)*supply) {
         a_factor += 0.05;
         flag = true;
         counter = 0;
     }
 
-    else if (sumDemand < 0.999*supply && flag && counter < 150) {
+    else if (sumDemand < 0.999*supply && flag && counter < max_counter) {
         counter++;
     }
     else if (sumDemand < 0.999*supply && flag) {
@@ -77,14 +79,21 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
     aFactor.record(a_factor);
 
-    alpha = a_factor*price/pow(supply,kappa);
+    /* Change alpha since beginning or not?
+     * -if since beginning, we take advantage of the supply provided,
+     * -if not, lower demand until we hit the limit*/
+    if (sumDemand > supply) {
+        alpha = a_factor*price/pow(supply,kappa);
+    }
     Alpha.record(alpha);
 
     /* Evaluate price p[i] (cents/kWh) */
     price = alpha*(pow(sumDemand,kappa));
+
     if (price < minPrice) {
         price = minPrice;
     }
+
     Price.record(price);
 
     /* Send new price to EVs */
