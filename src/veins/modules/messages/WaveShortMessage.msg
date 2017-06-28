@@ -20,8 +20,13 @@
 
 cplusplus {{
 #include "veins/base/utils/Coord.h"
+struct CarInfo {
+  double price;
+  double g;
+};
 }}
 
+class noncobject CarInfo;
 class noncobject Coord;
 
 packet WaveShortMessage {
@@ -52,4 +57,6 @@ packet WaveShortMessage {
 	
 	bool congestion = false;
 	double price = 0;
+	double wtp = 0;
+	CarInfo info;
 }

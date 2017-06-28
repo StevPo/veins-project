@@ -39,7 +39,12 @@ void Charging2Car::initialize(int stage) {
 
         /* Charging2 */
 
+        /* selfmessage to send WTP */
+        sendWTP = getParentModule()->par("SendWTP").boolValue();
+
         /* Energy absorbed by car in a timestamp */
+        new_time = simTime();
+        old_time = 0;
         timestampEnergy = 0;
         E.setName("timestampEnergy (kWh)");
 
@@ -64,7 +69,8 @@ void Charging2Car::initialize(int stage) {
         /* Charging efficiency */
         a = getParentModule()->par("a").doubleValue();
         /* Demand parameters */
-        w = getParentModule()->par("w").doubleValue();
+        w = getParentModule()->par("w").doubleValue();//+i*0.1;
+        i++;
         g = getParentModule()->par("g").doubleValue();
     }
 }
@@ -72,15 +78,27 @@ void Charging2Car::initialize(int stage) {
 void Charging2Car::onBeacon(WaveShortMessage* wsm) {
 }
 
+void Charging2Car::onTimer(cMessage* msg) {
+
+    if (sendWTP) {
+        EV << "sendmessageWTP" << endl;
+        sendMessage(w);
+    }
+}
+
 void Charging2Car::onData(WaveShortMessage* wsm) {
 
+    info = wsm->getInfo();
     /* Energy gained (kWh) */
-    timestampEnergy = demand*100*getModuleByPath("rsu[0]")->par("RSUTimer").doubleValue()/3600;
+    old_time = new_time;
+    new_time = simTime();
+    timestamp = new_time - old_time;
+    timestampEnergy = demand*100*timestamp.dbl()/3600;
     E.record(timestampEnergy);
     carEnergy += timestampEnergy;
 
     /* Cost of charging during i interval C[i] (cents) */
-    cost = timestampEnergy * wsm->getPrice();
+    cost = timestampEnergy * info.price;
     C.record(cost);
     sumCost += cost;
 
@@ -90,10 +108,14 @@ void Charging2Car::onData(WaveShortMessage* wsm) {
 
     /* Car Demand x[i] (100kW) */
     if (SoC < 1) {
-        demand += g*(w-demand*wsm->getPrice());
+        demand += info.g*(w-demand*info.price);
     }
     else {
         demand = 0;
+    }
+
+    if (demand > maxChargingRate) {
+        demand = maxChargingRate;
     }
 
     Dem.record(demand);
@@ -121,10 +143,15 @@ void Charging2Car::finish() {
 
 }
 
-void Charging2Car::sendMessage(std::string blockedRoadId) {
+void Charging2Car::sendMessage(double wtp) {
+    t_channel channel = dataOnSch ? type_SCH : type_CCH;
+    WaveShortMessage* wsm = prepareWSM("data", dataLengthBits, channel, dataPriority, -1,2);
+    wsm->setWtp(w);
+    sendWSM(wsm);
 }
 
 void Charging2Car::sendWSM(WaveShortMessage* wsm) {
+    sendDelayedDown(wsm,individualOffset);
 }
 
 

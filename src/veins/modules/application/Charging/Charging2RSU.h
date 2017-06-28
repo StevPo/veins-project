@@ -19,12 +19,20 @@
 #include "veins/modules/application/ieee80211p/BaseWaveApplLayer.h"
 #include "veins/modules/world/annotations/AnnotationManager.h"
 #include "veins/modules/mobility/traci/TraCIScenarioManager.h"
+#include "veins/modules/messages/WaveShortMessage_m.h"
 #include <math.h>
 
+
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <Eigen/Dense>
+#include <Eigen/Eigenvalues>
+
 
 using Veins::AnnotationManager;
 using Veins::TraCIScenarioManager;
+using namespace Eigen;
 using namespace std;
 
 class Charging2RSU : public BaseWaveApplLayer {
@@ -38,7 +46,7 @@ class Charging2RSU : public BaseWaveApplLayer {
     protected:
         virtual void onBeacon(WaveShortMessage* wsm);
         virtual void onData(WaveShortMessage* wsm);
-        void sendMessage(double price);
+        void sendMessage(CarInfo info);
         virtual void sendWSM(WaveShortMessage* wsm);
     protected:
         virtual void onTimer(cMessage* msg);
@@ -64,9 +72,33 @@ class Charging2RSU : public BaseWaveApplLayer {
         int counter;
         bool flag;
         int decrease;
+
+        /* Find g */
+        int cars;
+        const char *node;
+        ostringstream nodeName;
+        VectorXd w_vec;
+        double w;
+        double sum_w;
+        double q; //price on equilibrium
+        VectorXd xeq;
+        VectorXd xeq_sqrt;
+        double sum_xeq;
+        double dq;
+        MatrixXd Xd;
+        MatrixXd Xd_sqrt;
+        MatrixXd Wd;
+        MatrixXd ones;
+        MatrixXd Z;
+        VectorXd vec;
+        double max;
+        double g;
+        cOutVector G;
+        CarInfo info;
 };
 
 extern double sumDemand;
+extern int i;
 
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING2RSU_H_ */

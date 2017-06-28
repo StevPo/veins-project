@@ -34,6 +34,7 @@ module Car
         double incFactor = default(1.1);
         double decFactor = default(0.5);
         
+        bool SendWTP = default(false);
         double BatterySize = default(20);
         double initialSoC = default(0.5);
         double maxChargingRate = default(3);
@@ -70,5 +71,4 @@ module Car
 
         veinsradioIn --> nic.radioIn;
         appl.timerIn <-- timer.out;
-
 }

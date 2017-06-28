@@ -823,14 +823,17 @@ $O/veins/modules/application/Charging/Charging2RSU.o: veins/modules/application/
 	veins/base/utils/PassedMessage.h \
 	veins/base/utils/SimpleAddress.h \
 	veins/base/utils/miximkerneldefs.h \
+	veins/modules/application/Charging/Charging2Car.h \
 	veins/modules/application/Charging/Charging2RSU.h \
 	veins/modules/application/ieee80211p/BaseWaveApplLayer.h \
 	veins/modules/mac/ieee80211p/WaveAppToMac1609_4Interface.h \
 	veins/modules/messages/WaveShortMessage_m.h \
 	veins/modules/mobility/traci/TraCIBuffer.h \
 	veins/modules/mobility/traci/TraCIColor.h \
+	veins/modules/mobility/traci/TraCICommandInterface.h \
 	veins/modules/mobility/traci/TraCIConnection.h \
 	veins/modules/mobility/traci/TraCICoord.h \
+	veins/modules/mobility/traci/TraCIMobility.h \
 	veins/modules/mobility/traci/TraCIScenarioManager.h \
 	veins/modules/obstacle/Obstacle.h \
 	veins/modules/obstacle/ObstacleControl.h \

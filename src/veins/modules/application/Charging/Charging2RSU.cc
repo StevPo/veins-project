@@ -14,12 +14,15 @@
 // 
 
 #include "veins/modules/application/Charging/Charging2RSU.h"
+#include "veins/modules/application/Charging/Charging2Car.h"
 
 using Veins::AnnotationManagerAccess;
 using Veins::TraCIScenarioManagerAccess;
+using namespace Eigen;
 using namespace std;
 
 double sumDemand = 0;
+int i = -14;
 
 Define_Module(Charging2RSU);
 
@@ -55,6 +58,14 @@ void Charging2RSU::initialize(int stage) {
         counter = 0;
         flag = false;
         decrease = 0;
+
+        cars = 0;
+        w = 0;
+        sum_w = 0;
+        q = 0;
+        sum_xeq = 0;
+        g = 0;
+        G.setName("g (rate of convergence)");
     }
 }
 
@@ -62,7 +73,84 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
     SumD.record(sumDemand);
 
-    /* Evaluate a_factor & alpha due to network constrictions */
+    cars = traci->getManagedHosts().size();
+EV << "cars: " << cars << endl;
+
+if (cars!=0) {
+
+    w_vec.resize(cars);
+    sum_w = 0;
+    int j = 0;
+    for (int i = 0; i < cars; i++){
+//EV << "i: " << i << endl;
+        nodeName.str("");
+        nodeName << "node[" << j << "].appl";
+        node = nodeName.str().c_str();
+        while (check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node)) == nullptr) {
+            j++;
+            nodeName.str("");
+            nodeName << "node[" << j << "].appl";
+            node = nodeName.str().c_str();
+        }
+//EV << "node_name: " << nodeName.str() << endl;
+        w = check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node))->w;
+        w_vec[i] = w;
+        sum_w += w;
+        j++;
+//EV << node << " w: " << w_vec[i] << endl;
+    }
+//EV << "w_vec: " << w_vec << endl;
+
+    alpha = getParentModule()->par("alpha_init").doubleValue();
+    q = pow(alpha,1/(kappa+1))*pow(sum_w,kappa/(kappa+1));
+    sum_xeq = sum_w/q;
+    if (sum_xeq > supply) {
+        q = sum_w/supply;
+        sum_xeq = supply;
+        alpha = sum_w/pow(supply,kappa+1);
+    }
+//EV << " sum_w: " << sum_w << " xeq: " << sum_xeq << ", q: " << q << ", alpha: " << alpha << endl;
+
+    xeq.resize(cars);
+    xeq_sqrt.resize(cars);
+    for (int i = 0; i < cars; i++){
+        xeq[i] = w_vec[i]/q;
+        xeq_sqrt[i] = pow(xeq[i],0.5);
+    }
+
+    dq = alpha*kappa*pow(sum_xeq,kappa-1);
+//EV << "dq: " << dq << endl;
+    Xd = xeq.asDiagonal();
+//EV << "Xd: " << Xd << endl;
+    Xd_sqrt = xeq_sqrt.asDiagonal();
+//EV << "Xd_sqrt: " << Xd_sqrt << endl;
+//EV << "Xdinverse: " << Xd.inverse() << endl;
+    Wd = w_vec.asDiagonal();
+//EV << "Wd: " << Wd << endl;
+    ones = ones.Ones(cars, cars);
+//EV << "ones: " << ones << endl;
+
+    Z = (Wd*Xd.inverse()) + Xd_sqrt*ones*Xd_sqrt*dq;
+//EV << "Z: " << Z << endl;
+
+    EigenSolver<MatrixXd> Ze(Z);
+    vec = abs(Ze.eigenvalues().real().array());
+//EV << "Z eigenvalues: " << vec << endl;
+
+    max = 0;
+    for(int i=0;i<cars;i++)
+    {
+        if(vec[i]>max)
+        max=vec[i];
+    }
+
+    g = 1/max;
+    G.record(g);
+EV << "g: " << g << endl;
+}
+
+    /*
+     * Evaluate a_factor & alpha due to network constrictions
     if (sumDemand > (1+supply_limit)*supply) {
         a_factor += 0.05;
         flag = true;
@@ -79,13 +167,14 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
     aFactor.record(a_factor);
 
-    /* Change alpha since beginning or not?
+     * Change alpha since beginning or not?
      * -if since beginning, we take advantage of the supply provided,
-     * -if not, lower demand until we hit the limit*/
+     * -if not, lower demand until we hit the limit
     if (sumDemand > supply) {
         alpha = a_factor*price/pow(supply,kappa);
     }
     Alpha.record(alpha);
+    */
 
     /* Evaluate price p[i] (cents/kWh) */
     price = alpha*(pow(sumDemand,kappa));
@@ -97,7 +186,9 @@ void Charging2RSU::onTimer(cMessage* msg) {
     Price.record(price);
 
     /* Send new price to EVs */
-    sendMessage(price);
+    info.price = price;
+    info.g = g;
+    sendMessage(info);
 }
 
 void Charging2RSU::onBeacon(WaveShortMessage* wsm) {
@@ -107,11 +198,11 @@ void Charging2RSU::onData(WaveShortMessage* wsm) {
 
 }
 
-void Charging2RSU::sendMessage(double price) {
+void Charging2RSU::sendMessage(CarInfo info) {
     sentMessage = true;
     t_channel channel = dataOnSch ? type_SCH : type_CCH;
     WaveShortMessage* wsm = prepareWSM("data", dataLengthBits, channel, dataPriority, -1,2);
-    wsm->setPrice(price);
+    wsm->setInfo(info);
     sendWSM(wsm);
 }
 

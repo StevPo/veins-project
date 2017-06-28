@@ -51,8 +51,8 @@ void Timer_Car::initialize(int stage)
 void Timer_Car::handleMessage(cMessage *msg)
 {
 
-    sendCopyOf(message);
-    scheduleAt(simTime()+simtime_t(car_timeout), timeoutEvent);
+      sendCopyOf(message);
+  //  scheduleAt(simTime()+simtime_t(car_timeout), timeoutEvent);
 
 }
 
