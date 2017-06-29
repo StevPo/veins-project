@@ -71,32 +71,34 @@ void Charging2RSU::onTimer(cMessage* msg) {
     if (cars > max_cars) {
         max_cars = cars;
     }
-EV << "cars: " << cars << endl;
+                                                                                                            EV << "cars: " << cars << endl;
     if (cars!=0) {
 
         w_vec.resize(cars);
+                                                                                                            EV << "w_vec.size: " << w_vec.size() << endl;
         sum_w = 0;
         int j = 0;
         for (int i = 0; i < max_cars; i++){
-EV << "i: " << i << endl;
+                                                                                                            EV << "i: " << i << endl;
             nodeName.str("");
             nodeName << "node[" << i << "].appl";
             node = nodeName.str().c_str();
             if (check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node)) != nullptr) {
                 w = check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node))->w;
+                                                                                                            EV << "w: " << w << endl;
                 w_vec[j] = w;
                 sum_w += w;
-EV << "node_name: " << nodeName.str() << endl;
-EV << node << " w_vec[" << j << "] = " << w_vec[j] << endl;
+                                                                                                            EV << "node_name: " << nodeName.str() << endl;
+                                                                                                            EV << node << " w_vec[" << j << "] = " << w_vec[j] << endl;
                 j++;
             }
         }
-EV << "w_vec: " << w_vec << endl;
+                                                                                                            EV << "w_vec: " << w_vec << endl;
 
         alpha = getParentModule()->par("alpha_init").doubleValue();
         q = pow(alpha,1/(kappa+1))*pow(sum_w,kappa/(kappa+1));
         sum_xeq = sum_w/q;
-        if (sum_xeq > supply) {
+        if (sumDemand > supply) {
             w_factor = alpha * pow(supply,kappa+1) / sum_w;
             for (int i = 0; i < cars; i++){
                 w_vec[i] *= w_factor;
@@ -105,8 +107,8 @@ EV << "w_vec: " << w_vec << endl;
             q = sum_w/supply;
             sum_xeq = supply;
         }
-EV << "w_vec: " << w_vec << endl;
-EV << " sum_w: " << sum_w << " xeq: " << sum_xeq << ", q: " << q << ", alpha: " << alpha << endl;
+                                                                                                            EV << "w_vec: " << w_vec << endl;
+                                                                                                            EV << " sum_w: " << sum_w << " xeq: " << sum_xeq << ", q: " << q << ", alpha: " << alpha << endl;
 
         xeq.resize(cars);
         xeq_sqrt.resize(cars);
@@ -116,24 +118,21 @@ EV << " sum_w: " << sum_w << " xeq: " << sum_xeq << ", q: " << q << ", alpha: " 
         }
 
         dq = alpha*kappa*pow(sum_xeq,kappa-1);
-//EV << "dq: " << dq << endl;
+                                                                                                            //EV << "dq: " << dq << endl;
         Xd = xeq.asDiagonal();
-//EV << "Xd: " << Xd << endl;
+                                                                                                            //EV << "Xd: " << Xd << endl;
         Xd_sqrt = xeq_sqrt.asDiagonal();
-//EV << "Xd_sqrt: " << Xd_sqrt << endl;
-//EV << "Xdinverse: " << Xd.inverse() << endl;
+                                                                                                            //EV << "Xd_sqrt: " << Xd_sqrt << endl;
+                                                                                                            //EV << "Xdinverse: " << Xd.inverse() << endl;
         Wd = w_vec.asDiagonal();
-//EV << "Wd: " << Wd << endl;
+                                                                                                            //EV << "Wd: " << Wd << endl;
         ones = ones.Ones(cars, cars);
-//EV << "ones: " << ones << endl;
-
+                                                                                                            //EV << "ones: " << ones << endl;
         Z = (Wd*Xd.inverse()) + Xd_sqrt*ones*Xd_sqrt*dq;
-//EV << "Z: " << Z << endl;
-
+                                                                                                            //EV << "Z: " << Z << endl;
         EigenSolver<MatrixXd> Ze(Z);
         vec = abs(Ze.eigenvalues().real().array());
-//EV << "Z eigenvalues: " << vec << endl;
-
+                                                                                                            //EV << "Z eigenvalues: " << vec << endl;
         max = 0;
         for(int i=0;i<cars;i++)
         {
@@ -143,7 +142,7 @@ EV << " sum_w: " << sum_w << " xeq: " << sum_xeq << ", q: " << q << ", alpha: " 
 
         g = 1/max;
         G.record(g);
-EV << "g: " << g << endl;
+                                                                                                            EV << "g: " << g << endl;
         }
 
         /* Evaluate price p[i] (cents/kWh) */

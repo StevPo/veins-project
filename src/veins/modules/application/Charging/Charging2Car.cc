@@ -66,6 +66,7 @@ void Charging2Car::initialize(int stage) {
         SoC = getParentModule()->par("initialSoC").doubleValue();
         state.setName("SoC");
         maxChargingRate = getParentModule()->par("maxChargingRate").doubleValue();
+        minChargingRate = getParentModule()->par("minChargingRate").doubleValue();
         /* Charging efficiency */
         a = getParentModule()->par("a").doubleValue();
         /* Demand parameters */
@@ -109,6 +110,9 @@ void Charging2Car::onData(WaveShortMessage* wsm) {
     /* Car Demand x[i] (100kW) */
     if (SoC < 1) {
         demand += info.g*(w*info.w_factor-demand*info.price);
+        if (demand < minChargingRate) {
+            demand = minChargingRate;
+        }
     }
     else {
         demand = 0;

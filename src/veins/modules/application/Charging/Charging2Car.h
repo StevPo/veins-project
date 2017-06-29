@@ -88,6 +88,7 @@ class Charging2Car : public BaseWaveApplLayer {
         double SoC;
         cOutVector state;
         double maxChargingRate;
+        double minChargingRate;
         /* Charging efficiency */
         double a;
         /* Demand parameters */

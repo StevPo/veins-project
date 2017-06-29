@@ -37,7 +37,8 @@ module Car
         bool SendWTP = default(false);
         double BatterySize = default(20);
         double initialSoC = default(0.5);
-        double maxChargingRate = default(3);
+        double maxChargingRate = default(0.3);
+        double minChargingRate = default(0.05);
         double a = default(0.85);
         double w = default(0.01);
         double g = default(0.1);

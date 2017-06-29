@@ -14,7 +14,7 @@
   <vehicle depart="0" id="v1" route="r2" type="CarA" color="1,0,0" />
 -->
   
-  <flow id="f1" color="1,1,0" begin="0" end="40" probability="0.5" type="CarA" route="r1" departLane="random"/>
-  <flow id="f2" color="1,1,0" begin="0" end="40" probability="0.5" type="CarA" route="r2" departLane="random"/>
+  <flow id="f1" color="1,1,0" begin="0" end="100" probability="0.1" type="CarA" route="r1" departLane="random"/>
+  <flow id="f2" color="1,1,0" begin="0" end="100" probability="0.1" type="CarA" route="r2" departLane="random"/>
   
 </routes>
