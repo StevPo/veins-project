@@ -50,20 +50,14 @@ void Charging2RSU::initialize(int stage) {
         Price.setName("Price (cents/kWh)");
         alpha = getParentModule()->par("alpha_init").doubleValue();
         Alpha.setName("alpha price");
-        /* alpha parameters */
-        a_factor = 1;
-        aFactor.setName("a_factor");
-        supply_limit = getParentModule()->par("supply_limit").doubleValue();
-        max_counter = getParentModule()->par("max_counter").doubleValue();
-        counter = 0;
-        flag = false;
-        decrease = 0;
 
         cars = 0;
+        max_cars = 0;
         w = 0;
         sum_w = 0;
         q = 0;
         sum_xeq = 0;
+        w_factor = 1;
         g = 0;
         G.setName("g (rate of convergence)");
     }
@@ -74,122 +68,99 @@ void Charging2RSU::onTimer(cMessage* msg) {
     SumD.record(sumDemand);
 
     cars = traci->getManagedHosts().size();
+    if (cars > max_cars) {
+        max_cars = cars;
+    }
 EV << "cars: " << cars << endl;
+    if (cars!=0) {
 
-if (cars!=0) {
-
-    w_vec.resize(cars);
-    sum_w = 0;
-    int j = 0;
-    for (int i = 0; i < cars; i++){
-//EV << "i: " << i << endl;
-        nodeName.str("");
-        nodeName << "node[" << j << "].appl";
-        node = nodeName.str().c_str();
-        while (check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node)) == nullptr) {
-            j++;
+        w_vec.resize(cars);
+        sum_w = 0;
+        int j = 0;
+        for (int i = 0; i < max_cars; i++){
+EV << "i: " << i << endl;
             nodeName.str("");
-            nodeName << "node[" << j << "].appl";
+            nodeName << "node[" << i << "].appl";
             node = nodeName.str().c_str();
+            if (check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node)) != nullptr) {
+                w = check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node))->w;
+                w_vec[j] = w;
+                sum_w += w;
+EV << "node_name: " << nodeName.str() << endl;
+EV << node << " w_vec[" << j << "] = " << w_vec[j] << endl;
+                j++;
+            }
         }
-//EV << "node_name: " << nodeName.str() << endl;
-        w = check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node))->w;
-        w_vec[i] = w;
-        sum_w += w;
-        j++;
-//EV << node << " w: " << w_vec[i] << endl;
-    }
-//EV << "w_vec: " << w_vec << endl;
+EV << "w_vec: " << w_vec << endl;
 
-    alpha = getParentModule()->par("alpha_init").doubleValue();
-    q = pow(alpha,1/(kappa+1))*pow(sum_w,kappa/(kappa+1));
-    sum_xeq = sum_w/q;
-    if (sum_xeq > supply) {
-        q = sum_w/supply;
-        sum_xeq = supply;
-        alpha = sum_w/pow(supply,kappa+1);
-    }
-//EV << " sum_w: " << sum_w << " xeq: " << sum_xeq << ", q: " << q << ", alpha: " << alpha << endl;
+        alpha = getParentModule()->par("alpha_init").doubleValue();
+        q = pow(alpha,1/(kappa+1))*pow(sum_w,kappa/(kappa+1));
+        sum_xeq = sum_w/q;
+        if (sum_xeq > supply) {
+            w_factor = alpha * pow(supply,kappa+1) / sum_w;
+            for (int i = 0; i < cars; i++){
+                w_vec[i] *= w_factor;
+            }
+            sum_w = alpha * pow(supply,kappa+1);
+            q = sum_w/supply;
+            sum_xeq = supply;
+        }
+EV << "w_vec: " << w_vec << endl;
+EV << " sum_w: " << sum_w << " xeq: " << sum_xeq << ", q: " << q << ", alpha: " << alpha << endl;
 
-    xeq.resize(cars);
-    xeq_sqrt.resize(cars);
-    for (int i = 0; i < cars; i++){
-        xeq[i] = w_vec[i]/q;
-        xeq_sqrt[i] = pow(xeq[i],0.5);
-    }
+        xeq.resize(cars);
+        xeq_sqrt.resize(cars);
+        for (int i = 0; i < cars; i++){
+            xeq[i] = w_vec[i]/q;
+            xeq_sqrt[i] = pow(xeq[i],0.5);
+        }
 
-    dq = alpha*kappa*pow(sum_xeq,kappa-1);
+        dq = alpha*kappa*pow(sum_xeq,kappa-1);
 //EV << "dq: " << dq << endl;
-    Xd = xeq.asDiagonal();
+        Xd = xeq.asDiagonal();
 //EV << "Xd: " << Xd << endl;
-    Xd_sqrt = xeq_sqrt.asDiagonal();
+        Xd_sqrt = xeq_sqrt.asDiagonal();
 //EV << "Xd_sqrt: " << Xd_sqrt << endl;
 //EV << "Xdinverse: " << Xd.inverse() << endl;
-    Wd = w_vec.asDiagonal();
+        Wd = w_vec.asDiagonal();
 //EV << "Wd: " << Wd << endl;
-    ones = ones.Ones(cars, cars);
+        ones = ones.Ones(cars, cars);
 //EV << "ones: " << ones << endl;
 
-    Z = (Wd*Xd.inverse()) + Xd_sqrt*ones*Xd_sqrt*dq;
+        Z = (Wd*Xd.inverse()) + Xd_sqrt*ones*Xd_sqrt*dq;
 //EV << "Z: " << Z << endl;
 
-    EigenSolver<MatrixXd> Ze(Z);
-    vec = abs(Ze.eigenvalues().real().array());
+        EigenSolver<MatrixXd> Ze(Z);
+        vec = abs(Ze.eigenvalues().real().array());
 //EV << "Z eigenvalues: " << vec << endl;
 
-    max = 0;
-    for(int i=0;i<cars;i++)
-    {
-        if(vec[i]>max)
-        max=vec[i];
-    }
+        max = 0;
+        for(int i=0;i<cars;i++)
+        {
+            if(vec[i]>max)
+                max=vec[i];
+        }
 
-    g = 1/max;
-    G.record(g);
+        g = 1/max;
+        G.record(g);
 EV << "g: " << g << endl;
-}
+        }
 
-    /*
-     * Evaluate a_factor & alpha due to network constrictions
-    if (sumDemand > (1+supply_limit)*supply) {
-        a_factor += 0.05;
-        flag = true;
-        counter = 0;
+        /* Evaluate price p[i] (cents/kWh) */
+        price = alpha*(pow(sumDemand,kappa));
+
+        if (price < minPrice) {
+            price = minPrice;
+        }
+
+        Price.record(price);
+
+        /* Send new price to EVs */
+        info.price = price;
+        info.g = g;
+        info.w_factor = w_factor;
+        sendMessage(info);
     }
-
-    else if (sumDemand < 0.999*supply && flag && counter < max_counter) {
-        counter++;
-    }
-    else if (sumDemand < 0.999*supply && flag) {
-        a_factor -= 0.05;
-        counter = 0;
-    }
-
-    aFactor.record(a_factor);
-
-     * Change alpha since beginning or not?
-     * -if since beginning, we take advantage of the supply provided,
-     * -if not, lower demand until we hit the limit
-    if (sumDemand > supply) {
-        alpha = a_factor*price/pow(supply,kappa);
-    }
-    Alpha.record(alpha);
-    */
-
-    /* Evaluate price p[i] (cents/kWh) */
-    price = alpha*(pow(sumDemand,kappa));
-
-    if (price < minPrice) {
-        price = minPrice;
-    }
-
-    Price.record(price);
-
-    /* Send new price to EVs */
-    info.price = price;
-    info.g = g;
-    sendMessage(info);
-}
 
 void Charging2RSU::onBeacon(WaveShortMessage* wsm) {
 }

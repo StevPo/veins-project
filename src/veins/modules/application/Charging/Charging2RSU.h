@@ -64,17 +64,10 @@ class Charging2RSU : public BaseWaveApplLayer {
         cOutVector Price;
         double alpha;
         cOutVector Alpha;
-        /* alpha parameters */
-        double a_factor;
-        cOutVector aFactor;
-        double supply_limit;
-        int max_counter;
-        int counter;
-        bool flag;
-        int decrease;
 
         /* Find g */
         int cars;
+        int max_cars;
         const char *node;
         ostringstream nodeName;
         VectorXd w_vec;
@@ -84,6 +77,7 @@ class Charging2RSU : public BaseWaveApplLayer {
         VectorXd xeq;
         VectorXd xeq_sqrt;
         double sum_xeq;
+        double w_factor;
         double dq;
         MatrixXd Xd;
         MatrixXd Xd_sqrt;

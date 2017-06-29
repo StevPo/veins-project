@@ -23,6 +23,7 @@ cplusplus {{
 struct CarInfo {
   double price;
   double g;
+  double w_factor;
 };
 }}
 

@@ -108,7 +108,7 @@ void Charging2Car::onData(WaveShortMessage* wsm) {
 
     /* Car Demand x[i] (100kW) */
     if (SoC < 1) {
-        demand += info.g*(w-demand*info.price);
+        demand += info.g*(w*info.w_factor-demand*info.price);
     }
     else {
         demand = 0;
