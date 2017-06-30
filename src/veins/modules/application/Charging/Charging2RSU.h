@@ -57,6 +57,7 @@ class Charging2RSU : public BaseWaveApplLayer {
         /* Network supply (max load) */
         bool restrSupply;
         double supply;
+        bool w_change;
 
         /* Price parameters */
         double kappa;

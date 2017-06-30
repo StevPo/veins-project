@@ -29,6 +29,7 @@ module RSU
         string applType; //type of the application layer
         string nicType = default("Nic80211p"); // type of network interface card
         
+        bool w_change = default(true);
         bool restrictedSupply = default(true);
         double supply = default(10);
         double RSUTimer @unit(s) = default(0.1s);

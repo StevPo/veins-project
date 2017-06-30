@@ -42,6 +42,7 @@ void Charging2RSU::initialize(int stage) {
         /* Network supply (max load) */
         restrSupply = getParentModule()->par("restrictedSupply").boolValue();
         supply = getParentModule()->par("supply").doubleValue();
+        w_change = getParentModule()->par("w_change").boolValue();
 
         /* Price parameters */
         kappa = getParentModule()->par("kappa").doubleValue();
@@ -71,14 +72,12 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
     /* Get WTPi from every car-node */
     cars = traci->getManagedHosts().size();
-                                                                                                            EV << "cars: " << cars << endl;
     if (cars!=0) {
 
         w_vec.resize(cars);
         sum_w = 0;
         int j = 0;
         for (int i = 0; i < cars; i++){
-                                                                                                            EV << "i: " << i << endl;
             nodeName.str("");
             nodeName << "node[" << j << "].appl";
             node = nodeName.str().c_str();
@@ -93,8 +92,6 @@ void Charging2RSU::onTimer(cMessage* msg) {
             w_vec[i] = w;
             sum_w += w;
             j++;
-                                                                                                            EV << "node_name: " << nodeName.str() << endl;
-                                                                                                            EV << node << " w_vec[" << i << "] = " << w_vec[i] << endl;
         }
 
     /* Equilibrium values */
@@ -107,17 +104,20 @@ void Charging2RSU::onTimer(cMessage* msg) {
             w_factor = 1;
         //}
         if ( restrSupply && (sumDemand > supply) ) {
-            w_factor = alpha * pow(supply,kappa+1) / sum_w;
-            for (int i = 0; i < cars; i++){
-                w_vec[i] *= w_factor;
+            if (!w_change) {
+                alpha = sum_w/pow(supply,kappa+1);
             }
-            sum_w = alpha * pow(supply,kappa+1);
+            else {
+                w_factor = alpha * pow(supply,kappa+1) / sum_w;
+                for (int i = 0; i < cars; i++){
+                    w_vec[i] *= w_factor;
+                }
+                sum_w = alpha * pow(supply,kappa+1);
+            }
             q = sum_w/supply;
             sum_xeq = supply;
         }
         wFactor.record(w_factor);
-                                                                                                            EV << "w_vec: " << w_vec << endl;
-                                                                                                            EV << " sum_w: " << sum_w << " xeq: " << sum_xeq << ", q: " << q << ", alpha: " << alpha << endl;
 
         xeq.resize(cars);
         xeq_sqrt.resize(cars);
@@ -128,21 +128,13 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
     /* solve equation for g parameter */
         dq = alpha*kappa*pow(sum_xeq,kappa-1);
-                                                                                                            //EV << "dq: " << dq << endl;
         Xd = xeq.asDiagonal();
-                                                                                                            //EV << "Xd: " << Xd << endl;
         Xd_sqrt = xeq_sqrt.asDiagonal();
-                                                                                                            //EV << "Xd_sqrt: " << Xd_sqrt << endl;
-                                                                                                            //EV << "Xdinverse: " << Xd.inverse() << endl;
         Wd = w_vec.asDiagonal();
-                                                                                                            //EV << "Wd: " << Wd << endl;
         ones = ones.Ones(cars, cars);
-                                                                                                            //EV << "ones: " << ones << endl;
         Z = (Wd*Xd.inverse()) + Xd_sqrt*ones*Xd_sqrt*dq;
-                                                                                                            //EV << "Z: " << Z << endl;
         EigenSolver<MatrixXd> Ze(Z);
         vec = abs(Ze.eigenvalues().real().array());
-                                                                                                            //EV << "Z eigenvalues: " << vec << endl;
         max = 0;
         for(int i=0;i<cars;i++)
         {
@@ -152,8 +144,7 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
         g = 1/max;
         G.record(g);
-                                                                                                            EV << "g: " << g << endl;
-        }
+    }
 
     /* Evaluate price p[i] (cents/kWh) */
         price = alpha*(pow(sumDemand,kappa));
