@@ -21,6 +21,7 @@ using Veins::AnnotationManagerAccess;
 using namespace std;
 
 Define_Module(Charging2Car);
+int i_w = -14;
 
 void Charging2Car::initialize(int stage) {
     BaseWaveApplLayer::initialize(stage);
@@ -30,17 +31,6 @@ void Charging2Car::initialize(int stage) {
         traciVehicle = mobility->getVehicleCommandInterface();
         annotations = AnnotationManagerAccess().getIfExists();
         ASSERT(annotations);
-
-        /* Charging1 */
-        distance = 0;
-        sumDistance = 0;
-        chargingRatio = 1;
-        ChR.setName("ChargingRatio");
-
-        /* Charging2 */
-
-        /* selfmessage to send WTP */
-        sendWTP = getParentModule()->par("SendWTP").boolValue();
 
         /* Energy absorbed by car in a timestamp */
         new_time = simTime();
@@ -57,7 +47,7 @@ void Charging2Car::initialize(int stage) {
         sumCost = 0;
 
         /* Initial demand */
-        demand = 0;
+        demand = getParentModule()->par("minChargingRate").doubleValue();
         Dem.setName("CarDemand (100kW)");
         oldDemand = 0;
 
@@ -70,26 +60,15 @@ void Charging2Car::initialize(int stage) {
         /* Charging efficiency */
         a = getParentModule()->par("a").doubleValue();
         /* Demand parameters */
-        w = getParentModule()->par("w").doubleValue();//+i*0.1;
-        i++;
+        w = getParentModule()->par("w").doubleValue();//+i_w*0.1; i_w++;
         g = getParentModule()->par("g").doubleValue();
-    }
-}
-
-void Charging2Car::onBeacon(WaveShortMessage* wsm) {
-}
-
-void Charging2Car::onTimer(cMessage* msg) {
-
-    if (sendWTP) {
-        EV << "sendmessageWTP" << endl;
-        sendMessage(w);
     }
 }
 
 void Charging2Car::onData(WaveShortMessage* wsm) {
 
     info = wsm->getInfo();
+
     /* Energy gained (kWh) */
     old_time = new_time;
     new_time = simTime();
@@ -144,18 +123,7 @@ void Charging2Car::finish() {
 
     recordScalar("Car charging cost (cents)", sumCost);
     recordScalar("Car charged energy (kWh)", carEnergy);
-
 }
 
-void Charging2Car::sendMessage(double wtp) {
-    t_channel channel = dataOnSch ? type_SCH : type_CCH;
-    WaveShortMessage* wsm = prepareWSM("data", dataLengthBits, channel, dataPriority, -1,2);
-    wsm->setWtp(w);
-    sendWSM(wsm);
+void Charging2Car::onBeacon(WaveShortMessage* wsm) {
 }
-
-void Charging2Car::sendWSM(WaveShortMessage* wsm) {
-    sendDelayedDown(wsm,individualOffset);
-}
-
-

@@ -41,27 +41,11 @@ class Charging2Car : public BaseWaveApplLayer {
     protected:
         virtual void onBeacon(WaveShortMessage* wsm);
         virtual void onData(WaveShortMessage* wsm);
-        void sendMessage(double wtp);
-        virtual void sendWSM(WaveShortMessage* wsm);
-        virtual void onTimer(cMessage* msg);
     protected:
         std::map<std::string, cModule*> totalVehicles;
         std::mutex m;
 
-        /* Charging1 */
-        double distance;
-        double sumDistance;
-        double chargingRatio;
-        cOutVector ChR;
-
-        const double ChargerLength = 1.7;
-        const double ChargerGap = 0.3;
-
-        /* Charging2 */
         CarInfo info;
-
-        /* send WTP ??? */
-        bool sendWTP;
 
         /* Energy absorbed by car in a timestamp */
         simtime_t new_time;
@@ -97,5 +81,7 @@ class Charging2Car : public BaseWaveApplLayer {
     public:
         double w;
 };
+
+extern int i_w;
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING1CAR_H_ */

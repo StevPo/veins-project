@@ -55,6 +55,7 @@ class Charging2RSU : public BaseWaveApplLayer {
         cOutVector SumD;
 
         /* Network supply (max load) */
+        bool restrSupply;
         double supply;
 
         /* Price parameters */
@@ -65,19 +66,23 @@ class Charging2RSU : public BaseWaveApplLayer {
         double alpha;
         cOutVector Alpha;
 
-        /* Find g */
+        /* Get WTPi */
         int cars;
-        int max_cars;
         const char *node;
         ostringstream nodeName;
         VectorXd w_vec;
         double w;
         double sum_w;
-        double q; //price on equilibrium
-        VectorXd xeq;
-        VectorXd xeq_sqrt;
+
+        /* Equilibrium values */
+        double q;
         double sum_xeq;
         double w_factor;
+        cOutVector wFactor;
+        VectorXd xeq;
+        VectorXd xeq_sqrt;
+
+        /* variables for g parameter */
         double dq;
         MatrixXd Xd;
         MatrixXd Xd_sqrt;
@@ -88,11 +93,11 @@ class Charging2RSU : public BaseWaveApplLayer {
         double max;
         double g;
         cOutVector G;
+
+        /* message parameter */
         CarInfo info;
 };
 
 extern double sumDemand;
-extern int i;
-
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING2RSU_H_ */

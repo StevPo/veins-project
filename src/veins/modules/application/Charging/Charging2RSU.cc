@@ -22,7 +22,6 @@ using namespace Eigen;
 using namespace std;
 
 double sumDemand = 0;
-int i = -14;
 
 Define_Module(Charging2RSU);
 
@@ -41,6 +40,7 @@ void Charging2RSU::initialize(int stage) {
         SumD.setName("Demand (100kW)");
 
         /* Network supply (max load) */
+        restrSupply = getParentModule()->par("restrictedSupply").boolValue();
         supply = getParentModule()->par("supply").doubleValue();
 
         /* Price parameters */
@@ -52,12 +52,14 @@ void Charging2RSU::initialize(int stage) {
         Alpha.setName("alpha price");
 
         cars = 0;
-        max_cars = 0;
         w = 0;
         sum_w = 0;
         q = 0;
         sum_xeq = 0;
         w_factor = 1;
+        wFactor.setName("w multiplier");
+        dq = 0;
+        max = 0;
         g = 0;
         G.setName("g (rate of convergence)");
     }
@@ -67,38 +69,44 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
     SumD.record(sumDemand);
 
+    /* Get WTPi from every car-node */
     cars = traci->getManagedHosts().size();
-    if (cars > max_cars) {
-        max_cars = cars;
-    }
                                                                                                             EV << "cars: " << cars << endl;
     if (cars!=0) {
 
         w_vec.resize(cars);
-                                                                                                            EV << "w_vec.size: " << w_vec.size() << endl;
         sum_w = 0;
         int j = 0;
-        for (int i = 0; i < max_cars; i++){
+        for (int i = 0; i < cars; i++){
                                                                                                             EV << "i: " << i << endl;
             nodeName.str("");
-            nodeName << "node[" << i << "].appl";
+            nodeName << "node[" << j << "].appl";
             node = nodeName.str().c_str();
-            if (check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node)) != nullptr) {
-                w = check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node))->w;
-                                                                                                            EV << "w: " << w << endl;
-                w_vec[j] = w;
-                sum_w += w;
-                                                                                                            EV << "node_name: " << nodeName.str() << endl;
-                                                                                                            EV << node << " w_vec[" << j << "] = " << w_vec[j] << endl;
+            while (check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node)) == nullptr) {
                 j++;
+                nodeName.str("");
+                nodeName << "node[" << j << "].appl";
+                node = nodeName.str().c_str();
             }
-        }
-                                                                                                            EV << "w_vec: " << w_vec << endl;
 
+            w = check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node))->w;
+            w_vec[i] = w;
+            sum_w += w;
+            j++;
+                                                                                                            EV << "node_name: " << nodeName.str() << endl;
+                                                                                                            EV << node << " w_vec[" << i << "] = " << w_vec[i] << endl;
+        }
+
+    /* Equilibrium values */
         alpha = getParentModule()->par("alpha_init").doubleValue();
         q = pow(alpha,1/(kappa+1))*pow(sum_w,kappa/(kappa+1));
         sum_xeq = sum_w/q;
-        if (sumDemand > supply) {
+
+        /* Load restriction -> change w*/
+        //if ( restrSupply && (sum_xeq < supply) ) {
+            w_factor = 1;
+        //}
+        if ( restrSupply && (sumDemand > supply) ) {
             w_factor = alpha * pow(supply,kappa+1) / sum_w;
             for (int i = 0; i < cars; i++){
                 w_vec[i] *= w_factor;
@@ -107,6 +115,7 @@ void Charging2RSU::onTimer(cMessage* msg) {
             q = sum_w/supply;
             sum_xeq = supply;
         }
+        wFactor.record(w_factor);
                                                                                                             EV << "w_vec: " << w_vec << endl;
                                                                                                             EV << " sum_w: " << sum_w << " xeq: " << sum_xeq << ", q: " << q << ", alpha: " << alpha << endl;
 
@@ -117,6 +126,7 @@ void Charging2RSU::onTimer(cMessage* msg) {
             xeq_sqrt[i] = pow(xeq[i],0.5);
         }
 
+    /* solve equation for g parameter */
         dq = alpha*kappa*pow(sum_xeq,kappa-1);
                                                                                                             //EV << "dq: " << dq << endl;
         Xd = xeq.asDiagonal();
@@ -145,7 +155,7 @@ void Charging2RSU::onTimer(cMessage* msg) {
                                                                                                             EV << "g: " << g << endl;
         }
 
-        /* Evaluate price p[i] (cents/kWh) */
+    /* Evaluate price p[i] (cents/kWh) */
         price = alpha*(pow(sumDemand,kappa));
 
         if (price < minPrice) {
@@ -154,7 +164,7 @@ void Charging2RSU::onTimer(cMessage* msg) {
 
         Price.record(price);
 
-        /* Send new price to EVs */
+    /* Send new price-g-w to EVs */
         info.price = price;
         info.g = g;
         info.w_factor = w_factor;
