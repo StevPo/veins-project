@@ -69,7 +69,7 @@ void Charging2RSU::initialize(int stage) {
 void Charging2RSU::onTimer(cMessage* msg) {
 
     SumD.record(sumDemand);
-
+    //if ( simTime() > 50 ) { supply = 7; }
     /* Get WTPi from every car-node */
     cars = traci->getManagedHosts().size();
     if (cars!=0) {
@@ -95,15 +95,12 @@ void Charging2RSU::onTimer(cMessage* msg) {
         }
 
     /* Equilibrium values */
-        alpha = getParentModule()->par("alpha_init").doubleValue();
         q = pow(alpha,1/(kappa+1))*pow(sum_w,kappa/(kappa+1));
         sum_xeq = sum_w/q;
 
-        /* Load restriction -> change w*/
-        //if ( restrSupply && (sum_xeq < supply) ) {
-            w_factor = 1;
-        //}
-        if ( restrSupply && (sumDemand > supply) ) {
+        /* Load restriction -> change alpha/w */
+        w_factor = 1;
+        if ( restrSupply && (sum_xeq > supply) ) {
             if (!w_change) {
                 alpha = sum_w/pow(supply,kappa+1);
             }
@@ -118,6 +115,7 @@ void Charging2RSU::onTimer(cMessage* msg) {
             sum_xeq = supply;
         }
         wFactor.record(w_factor);
+        Alpha.record(alpha);
 
         xeq.resize(cars);
         xeq_sqrt.resize(cars);
@@ -160,13 +158,6 @@ void Charging2RSU::onTimer(cMessage* msg) {
         info.g = g;
         info.w_factor = w_factor;
         sendMessage(info);
-    }
-
-void Charging2RSU::onBeacon(WaveShortMessage* wsm) {
-}
-
-void Charging2RSU::onData(WaveShortMessage* wsm) {
-
 }
 
 void Charging2RSU::sendMessage(CarInfo info) {
@@ -179,4 +170,11 @@ void Charging2RSU::sendMessage(CarInfo info) {
 
 void Charging2RSU::sendWSM(WaveShortMessage* wsm) {
     sendDelayedDown(wsm,individualOffset);
+}
+
+void Charging2RSU::onBeacon(WaveShortMessage* wsm) {
+}
+
+void Charging2RSU::onData(WaveShortMessage* wsm) {
+
 }
