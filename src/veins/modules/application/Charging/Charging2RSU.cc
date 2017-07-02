@@ -22,6 +22,7 @@ using namespace Eigen;
 using namespace std;
 
 double sumDemand = 0;
+double systemCost = 0;
 
 Define_Module(Charging2RSU);
 
@@ -42,6 +43,9 @@ void Charging2RSU::initialize(int stage) {
         /* Network supply (max load) */
         restrSupply = getParentModule()->par("restrictedSupply").boolValue();
         supply = getParentModule()->par("supply").doubleValue();
+        changeSupply = getParentModule()->par("changeSupply").boolValue();
+        newSupply = getParentModule()->par("newSupply").doubleValue();
+        changeTime = getParentModule()->par("changeTime").doubleValue();
         w_change = getParentModule()->par("w_change").boolValue();
 
         /* Price parameters */
@@ -69,54 +73,22 @@ void Charging2RSU::initialize(int stage) {
 void Charging2RSU::onTimer(cMessage* msg) {
 
     SumD.record(sumDemand);
-    //if ( simTime() > 50 ) { supply = 7; }
-    /* Get WTPi from every car-node */
+
     cars = traci->getManagedHosts().size();
     if (cars!=0) {
 
-        w_vec.resize(cars);
-        sum_w = 0;
-        int j = 0;
-        for (int i = 0; i < cars; i++){
-            nodeName.str("");
-            nodeName << "node[" << j << "].appl";
-            node = nodeName.str().c_str();
-            while (check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node)) == nullptr) {
-                j++;
-                nodeName.str("");
-                nodeName << "node[" << j << "].appl";
-                node = nodeName.str().c_str();
-            }
-
-            w = check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node))->w;
-            w_vec[i] = w;
-            sum_w += w;
-            j++;
-        }
+    /* Get WTP from every car-node */
+        getWTPs();
 
     /* Equilibrium values */
         q = pow(alpha,1/(kappa+1))*pow(sum_w,kappa/(kappa+1));
         sum_xeq = sum_w/q;
-
-        /* Load restriction -> change alpha/w */
         w_factor = 1;
-        if ( restrSupply && (sum_xeq > supply) ) {
-            if (!w_change) {
-                alpha = sum_w/pow(supply,kappa+1);
-            }
-            else {
-                w_factor = alpha * pow(supply,kappa+1) / sum_w;
-                for (int i = 0; i < cars; i++){
-                    w_vec[i] *= w_factor;
-                }
-                sum_w = alpha * pow(supply,kappa+1);
-            }
-            q = sum_w/supply;
-            sum_xeq = supply;
+        if ( restrSupply ) {
+            changeAlphaW(); //Load restriction -> change alpha/w
         }
         wFactor.record(w_factor);
         Alpha.record(alpha);
-
         xeq.resize(cars);
         xeq_sqrt.resize(cars);
         for (int i = 0; i < cars; i++){
@@ -125,39 +97,85 @@ void Charging2RSU::onTimer(cMessage* msg) {
         }
 
     /* solve equation for g parameter */
-        dq = alpha*kappa*pow(sum_xeq,kappa-1);
-        Xd = xeq.asDiagonal();
-        Xd_sqrt = xeq_sqrt.asDiagonal();
-        Wd = w_vec.asDiagonal();
-        ones = ones.Ones(cars, cars);
-        Z = (Wd*Xd.inverse()) + Xd_sqrt*ones*Xd_sqrt*dq;
-        EigenSolver<MatrixXd> Ze(Z);
-        vec = abs(Ze.eigenvalues().real().array());
-        max = 0;
-        for(int i=0;i<cars;i++)
-        {
-            if(vec[i]>max)
-                max=vec[i];
-        }
-
-        g = 1/max;
-        G.record(g);
+        computeG();
     }
 
     /* Evaluate price p[i] (cents/kWh) */
-        price = alpha*(pow(sumDemand,kappa));
+    price = alpha*(pow(sumDemand,kappa));
 
-        if (price < minPrice) {
-            price = minPrice;
-        }
+    if (price < minPrice) {
+        price = minPrice;
+    }
 
-        Price.record(price);
+    Price.record(price);
 
     /* Send new price-g-w to EVs */
-        info.price = price;
-        info.g = g;
-        info.w_factor = w_factor;
-        sendMessage(info);
+    info.price = price;
+    info.g = g;
+    info.w_factor = w_factor;
+    sendMessage(info);
+}
+
+void Charging2RSU::getWTPs() {
+    w_vec.resize(cars);
+    sum_w = 0;
+    int j = 0;
+    for (int i = 0; i < cars; i++){
+        nodeName.str("");
+        nodeName << "node[" << j << "].appl";
+        node = nodeName.str().c_str();
+        while (check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node)) == nullptr) {
+            j++;
+            nodeName.str("");
+            nodeName << "node[" << j << "].appl";
+            node = nodeName.str().c_str();
+        }
+
+        w = check_and_cast_nullable<Charging2Car*>(getSimulation()->getModuleByPath(node))->w;
+        w_vec[i] = w;
+        sum_w += w;
+        j++;
+    }
+}
+
+void Charging2RSU::changeAlphaW() {
+    if ( changeSupply && (simTime().dbl() > changeTime) ) {
+        supply = newSupply;
+    }
+    if ( (sum_xeq > supply) ) {
+        if (!w_change) {
+            alpha = sum_w/pow(supply,kappa+1);
+        }
+        else {
+            w_factor = alpha * pow(supply,kappa+1) / sum_w;
+            for (int i = 0; i < cars; i++){
+                w_vec[i] *= w_factor;
+            }
+            sum_w = alpha * pow(supply,kappa+1);
+        }
+        q = sum_w/supply;
+        sum_xeq = supply;
+    }
+}
+
+void Charging2RSU::computeG() {
+    dq = alpha*kappa*pow(sum_xeq,kappa-1);
+    Xd = xeq.asDiagonal();
+    Xd_sqrt = xeq_sqrt.asDiagonal();
+    Wd = w_vec.asDiagonal();
+    ones = ones.Ones(cars, cars);
+    Z = (Wd*Xd.inverse()) + Xd_sqrt*ones*Xd_sqrt*dq;
+    EigenSolver<MatrixXd> Ze(Z);
+    vec = abs(Ze.eigenvalues().real().array());
+    max = 0;
+    for(int i=0;i<cars;i++)
+    {
+        if(vec[i]>max)
+            max=vec[i];
+    }
+
+    g = 1/max;
+    G.record(g);
 }
 
 void Charging2RSU::sendMessage(CarInfo info) {
@@ -170,6 +188,10 @@ void Charging2RSU::sendMessage(CarInfo info) {
 
 void Charging2RSU::sendWSM(WaveShortMessage* wsm) {
     sendDelayedDown(wsm,individualOffset);
+}
+
+void Charging2RSU::finish() {
+    recordScalar("System cost (cents)", systemCost);
 }
 
 void Charging2RSU::onBeacon(WaveShortMessage* wsm) {

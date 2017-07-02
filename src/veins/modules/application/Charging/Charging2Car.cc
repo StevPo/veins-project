@@ -32,6 +32,11 @@ void Charging2Car::initialize(int stage) {
         annotations = AnnotationManagerAccess().getIfExists();
         ASSERT(annotations);
 
+        /* change w */
+        changeW = getParentModule()->par("changeW").boolValue();
+        changeTime = getParentModule()->par("changeTime").doubleValue();
+        w_new = getParentModule()->par("wNew").doubleValue();
+
         /* Energy absorbed by car in a timestamp */
         new_time = simTime();
         old_time = 0;
@@ -45,6 +50,7 @@ void Charging2Car::initialize(int stage) {
         cost = 0;
         C.setName("Cost (cents)");
         sumCost = 0;
+        oldSumCost = 0;
 
         /* Initial demand */
         demand = getParentModule()->par("minChargingRate").doubleValue();
@@ -67,6 +73,10 @@ void Charging2Car::initialize(int stage) {
 
 void Charging2Car::onData(WaveShortMessage* wsm) {
 
+    if ( changeW && (simTime().dbl() > changeTime)) {
+        w = w_new;
+    }
+
     info = wsm->getInfo();
 
     /* Energy gained (kWh) */
@@ -81,6 +91,12 @@ void Charging2Car::onData(WaveShortMessage* wsm) {
     cost = timestampEnergy * info.price;
     C.record(cost);
     sumCost += cost;
+
+    /* Add to systemCost (cents) */
+    c.lock();
+    systemCost += sumCost - oldSumCost;
+    c.unlock();
+    oldSumCost = sumCost;
 
     /* State of Charge */
     SoC += a*timestampEnergy/BatterySize;

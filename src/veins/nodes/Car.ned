@@ -39,7 +39,10 @@ module Car
         double maxChargingRate = default(0.3);
         double minChargingRate = default(0.05);
         double a = default(0.85);
-        double w = default(0.01);
+        bool changeW = default(false);
+        double changeTime = default(50);
+        double wNew = default(10);
+        double w = default(5);
         double g = default(0.1);
     gates:
         input veinsradioIn; // gate for sendDirect

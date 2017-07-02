@@ -44,8 +44,14 @@ class Charging2Car : public BaseWaveApplLayer {
     protected:
         std::map<std::string, cModule*> totalVehicles;
         std::mutex m;
+        std::mutex c;
 
         CarInfo info;
+
+        /* change w */
+        bool changeW;
+        double changeTime;
+        double w_new;
 
         /* Energy absorbed by car in a timestamp */
         simtime_t new_time;
@@ -61,6 +67,7 @@ class Charging2Car : public BaseWaveApplLayer {
         double cost;
         cOutVector C;
         double sumCost;
+        double oldSumCost;
 
         /* CarDemand */
         double demand;

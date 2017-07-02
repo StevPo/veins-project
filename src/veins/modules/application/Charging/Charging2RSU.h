@@ -38,6 +38,7 @@ using namespace std;
 class Charging2RSU : public BaseWaveApplLayer {
     public:
         virtual void initialize(int stage);
+        virtual void finish();
     protected:
         TraCIScenarioManager* traci;
         AnnotationManager* annotations;
@@ -50,6 +51,9 @@ class Charging2RSU : public BaseWaveApplLayer {
         virtual void sendWSM(WaveShortMessage* wsm);
     protected:
         virtual void onTimer(cMessage* msg);
+        void getWTPs();
+        void changeAlphaW();
+        void computeG();
 
         /* sumDemand (extern) */
         cOutVector SumD;
@@ -57,6 +61,9 @@ class Charging2RSU : public BaseWaveApplLayer {
         /* Network supply (max load) */
         bool restrSupply;
         double supply;
+        bool changeSupply;
+        double newSupply;
+        double changeTime;
         bool w_change;
 
         /* Price parameters */
@@ -100,5 +107,6 @@ class Charging2RSU : public BaseWaveApplLayer {
 };
 
 extern double sumDemand;
+extern double systemCost;
 
 #endif /* SRC_VEINS_MODULES_APPLICATION_CHARGING_CHARGING2RSU_H_ */

@@ -32,6 +32,9 @@ module RSU
         bool w_change = default(true);
         bool restrictedSupply = default(true);
         double supply = default(10);
+        bool changeSupply = default(false);
+        double newSupply = default(7);
+        double changeTime = default(50);
         double RSUTimer @unit(s) = default(0.1s);
         double alpha_init = default(0.0012);
         double supply_limit = default(0.05); 
