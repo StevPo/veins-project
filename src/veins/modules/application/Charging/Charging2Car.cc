@@ -34,7 +34,7 @@ void Charging2Car::initialize(int stage) {
 
         /* change w */
         changeW = getParentModule()->par("changeW").boolValue();
-        changeTime = getParentModule()->par("changeTime").doubleValue();
+        changeTime = getParentModule()->par("changeWTime").doubleValue();
         w_new = getParentModule()->par("wNew").doubleValue();
 
         /* Energy absorbed by car in a timestamp */

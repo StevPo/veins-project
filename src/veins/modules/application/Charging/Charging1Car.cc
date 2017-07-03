@@ -14,7 +14,6 @@
 // 
 
 #include "veins/modules/application/Charging/Charging1Car.h"
-#include "veins/modules/application/Charging/Charging2RSU.h"
 
 using Veins::TraCIMobilityAccess;
 using Veins::AnnotationManagerAccess;
@@ -33,7 +32,7 @@ void Charging1Car::initialize(int stage) {
 
         distance = 0;
         sumDistance = 0;
-        chargingRatio = 1;
+        chargingRatio = getParentModule()->par("chargingRatio").doubleValue();;
         ChR.setName("ChargingRatio");
         demand = 0;
         Dem.setName("CarDemand");
@@ -44,10 +43,10 @@ void Charging1Car::initialize(int stage) {
 }
 
 void Charging1Car::onTimer(cMessage* msg) {
-    DBG << "TimerCar! Name: " << msg->getName() << endl;
 
     distance = mobility->getSpeed()*getParentModule()->par("CarTimer").doubleValue();
 
+    /*
     if ( sumDistance + distance <= ChargerLength )  {
         sumDistance += distance;
         demand = chargingRatio;
@@ -60,12 +59,13 @@ void Charging1Car::onTimer(cMessage* msg) {
         sumDistance += distance - (ChargerLength+ChargerGap);
         demand = chargingRatio;
     }
+    */
 
+    demand = chargingRatio;
     Dem.record(demand);
 
     m.lock();
     sumDemand += demand - oldDemand;
-    EV << "Demand: " << sumDemand << endl;
     m.unlock();
 
     oldDemand = demand;

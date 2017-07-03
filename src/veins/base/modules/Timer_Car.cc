@@ -52,7 +52,7 @@ void Timer_Car::handleMessage(cMessage *msg)
 {
 
       sendCopyOf(message);
-  //  scheduleAt(simTime()+simtime_t(car_timeout), timeoutEvent);
+      scheduleAt(simTime()+simtime_t(car_timeout), timeoutEvent);
 
 }
 

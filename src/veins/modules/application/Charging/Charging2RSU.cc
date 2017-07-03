@@ -45,7 +45,7 @@ void Charging2RSU::initialize(int stage) {
         supply = getParentModule()->par("supply").doubleValue();
         changeSupply = getParentModule()->par("changeSupply").boolValue();
         newSupply = getParentModule()->par("newSupply").doubleValue();
-        changeTime = getParentModule()->par("changeTime").doubleValue();
+        changeTime = getParentModule()->par("changeSupplyTime").doubleValue();
         w_change = getParentModule()->par("w_change").boolValue();
 
         /* Price parameters */

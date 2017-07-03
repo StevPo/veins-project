@@ -19,6 +19,7 @@
 #include "veins/modules/application/ieee80211p/BaseWaveApplLayer.h"
 #include "veins/modules/mobility/traci/TraCIMobility.h"
 #include "veins/modules/mobility/traci/TraCICommandInterface.h"
+#include "veins/modules/application/Charging/Charging2RSU.h"
 
 #include <iostream>
 #include <mutex>

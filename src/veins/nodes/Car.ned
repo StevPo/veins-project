@@ -31,6 +31,7 @@ module Car
         string veinsmobilityType; //type of the mobility module 
         
         double CarTimer @unit(s) = default(0.001s);
+        double chargingRatio = default(1);
         double incFactor = default(1.1);
         double decFactor = default(0.5);
         
@@ -40,7 +41,7 @@ module Car
         double minChargingRate = default(0.05);
         double a = default(0.85);
         bool changeW = default(false);
-        double changeTime = default(50);
+        double changeWTime = default(50);
         double wNew = default(10);
         double w = default(5);
         double g = default(0.1);

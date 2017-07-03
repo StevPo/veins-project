@@ -19,6 +19,7 @@
 #include "veins/modules/application/ieee80211p/BaseWaveApplLayer.h"
 #include "veins/modules/world/annotations/AnnotationManager.h"
 #include "veins/modules/mobility/traci/TraCIScenarioManager.h"
+#include "veins/modules/application/Charging/Charging2RSU.h"
 
 #include <iostream>
 
