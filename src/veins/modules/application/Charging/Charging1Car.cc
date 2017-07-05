@@ -44,9 +44,9 @@ void Charging1Car::initialize(int stage) {
 
 void Charging1Car::onTimer(cMessage* msg) {
 
+    /*
     distance = mobility->getSpeed()*getParentModule()->par("CarTimer").doubleValue();
 
-    /*
     if ( sumDistance + distance <= ChargerLength )  {
         sumDistance += distance;
         demand = chargingRatio;
